@@ -1,0 +1,597 @@
+{
+  "qc1": {
+    "summary": "The lesson exhibits high research quality, utilizing official Git documentation and reputable tutorials to support core concepts like branching, merging, and conflict resolution. Claims are generally well-backed by citations, though minor unsupported commands like git merge --abort and git diff appear without explicit source coverage in the provided excerpts. Addressing these minor citation gaps will ensure complete traceability across all diagnostic commands.",
+    "accuracy_score": 88,
+    "claims": [
+      {
+        "claim": "[Creating and Switching Git Branches] A Git branch is simply a lightweight, movable pointer to a specific commit.",
+        "location": "[Creating and Switching Git Branches]",
+        "verdict": "supported",
+        "explanation": "The evidence explicitly confirms that a branch in Git is a lightweight movable pointer to a commit.",
+        "correction": "",
+        "evidence": "[E1] Git - Branches in a Nutshell states that a branch in Git is simply a lightweight movable pointer to one of these commits.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+        ]
+      },
+      {
+        "claim": "[Creating and Switching Git Branches] HEAD is a pointer pointing to the current branch or commit you have checked out in your working directory.",
+        "location": "[Creating and Switching Git Branches]",
+        "verdict": "supported",
+        "explanation": "The evidence verifies that HEAD is a special pointer pointing to the local branch or commit you currently have checked out.",
+        "correction": "",
+        "evidence": "[E4][E18] Git documentation notes that HEAD points to the branch you have checked out.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging",
+          "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+        ]
+      },
+      {
+        "claim": "[Creating and Switching Git Branches] To create a branch without switching to it, use git branch <branch-name>.",
+        "location": "[Creating and Switching Git Branches]",
+        "verdict": "supported",
+        "explanation": "The evidence states that the git branch command creates a new branch without switching to it.",
+        "correction": "",
+        "evidence": "[E17][E18] Git - Branches in a Nutshell states that the git branch command only created a new branch and didn't switch to it.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+        ]
+      },
+      {
+        "claim": "[Creating and Switching Git Branches] To switch to an existing branch, or create and switch in one go, you can use git switch or git switch -c <new-branch-name>.",
+        "location": "[Creating and Switching Git Branches]",
+        "verdict": "supported",
+        "explanation": "The evidence confirms that git switch is used for switching to an existing branch and git switch -c is used to create and switch to a new branch.",
+        "correction": "",
+        "evidence": "[E9] Git - Branches in a Nutshell lists git switch for switching and git switch -c for creating and switching.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+        ]
+      },
+      {
+        "claim": "[Merging Branches and Handling Three-Way Merges] If you merge a branch and its history is a direct linear descendant of your current branch, Git performs a fast-forward merge.",
+        "location": "[Merging Branches and Handling Three-Way Merges]",
+        "verdict": "supported",
+        "explanation": "The evidence states that when a commit can be reached by following the first commit's history (directly ahead), Git performs a fast-forward merge by moving the pointer forward.",
+        "correction": "",
+        "evidence": "[E2] Git - Basic Branching and Merging describes a fast-forward merge when a commit is directly ahead.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging"
+        ]
+      },
+      {
+        "claim": "[Merging Branches and Handling Three-Way Merges] A three-way merge utilizes two branch tips and their closest common ancestor commit to synthesize a new commit containing the combined work.",
+        "location": "[Merging Branches and Handling Three-Way Merges]",
+        "verdict": "supported",
+        "explanation": "The evidence notes that a three-way merge uses the two snapshots pointed to by the branch tips and the common ancestor of the two.",
+        "correction": "",
+        "evidence": "[E12] Git - Basic Branching and Merging explains that Git does a simple three-way merge using the two snapshots pointed to by branch tips and their common ancestor.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging"
+        ]
+      },
+      {
+        "claim": "[Resolving Simple Merge Conflicts] A merge conflict occurs when two separate branches have modified the exact same part or lines of a file in different ways, and Git cannot automatically determine which version is correct.",
+        "location": "[Resolving Simple Merge Conflicts]",
+        "verdict": "supported",
+        "explanation": "The evidence states that changing the same part of the same file differently in two merging branches causes a merge conflict where Git cannot merge them cleanly.",
+        "correction": "",
+        "evidence": "[E13] Git - Basic Branching and Merging notes that changing the same part of the same file differently results in a merge conflict.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging"
+        ]
+      },
+      {
+        "claim": "[Resolving Simple Merge Conflicts] git status lists all unmerged files and paths requiring resolution.",
+        "location": "[Resolving Simple Merge Conflicts]",
+        "verdict": "supported",
+        "explanation": "The evidence shows that git status lists unmerged paths and files that require fixing conflicts and running git commit or git add.",
+        "correction": "",
+        "evidence": "[E14][E16] Git - Basic Branching and Merging demonstrates git status output showing unmerged paths.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging"
+        ]
+      },
+      {
+        "claim": "[Resolving Simple Merge Conflicts] git diff displays detailed line-by-line differences between your working tree and staging area.",
+        "location": "[Resolving Simple Merge Conflicts]",
+        "verdict": "unsupported",
+        "explanation": "The provided text excerpts do not mention git diff or its functionality.",
+        "correction": "git status is shown in the text to list unmerged paths, but git diff is not covered by the evidence.",
+        "evidence": "[E5][E7] The provided evidence does not mention git diff.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging",
+          "https://git-scm.com/docs/git-switch"
+        ]
+      },
+      {
+        "claim": "[Resolving Simple Merge Conflicts] If you ever get stuck during a conflict, you can completely cancel the merge operation using git merge --abort.",
+        "location": "[Resolving Simple Merge Conflicts]",
+        "verdict": "unsupported",
+        "explanation": "The provided evidence excerpts do not mention git merge --abort.",
+        "correction": "The text does not mention git merge --abort for canceling merges.",
+        "evidence": "[E5][E10][E13] The provided evidence does not contain information about git merge --abort.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging",
+          "https://git-scm.com/docs/git-switch"
+        ]
+      },
+      {
+        "claim": "[Answer key] The git switch -c <new-branch> command creates a new branch and checks it out immediately.",
+        "location": "[Answer key]",
+        "verdict": "supported",
+        "explanation": "The evidence explicitly states that git switch -c creates a new branch and switches to it.",
+        "correction": "",
+        "evidence": "[E9] Git - Branches in a Nutshell states: 'Create a new branch and switch to it: git switch -c new-branch'.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+        ]
+      },
+      {
+        "claim": "[Answer key] The git merge --abort command safely stops the merge process and restores your working tree back to its pre-merge state.",
+        "location": "[Answer key]",
+        "verdict": "unsupported",
+        "explanation": "None of the provided evidence excerpts mention git merge --abort.",
+        "correction": "The provided text does not contain references to git merge --abort.",
+        "evidence": "[E5][E7][E12][E19] The evidence does not discuss git merge --abort.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging",
+          "https://git-scm.com/docs/git-switch"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "S1",
+        "title": "Git - Basic Branching and Merging",
+        "url": "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "high",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "Official Git documentation (Pro Git book) providing reliable coverage of branching and merging."
+      },
+      {
+        "source_id": "S2",
+        "title": "Git - git-branch Documentation",
+        "url": "https://git-scm.com/docs/git-branch",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "high",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "Official Git reference documentation for git-branch."
+      },
+      {
+        "source_id": "S3",
+        "title": "Git - git-switch Documentation",
+        "url": "https://git-scm.com/docs/git-switch",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "high",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "Official Git reference documentation for git-switch."
+      },
+      {
+        "source_id": "S4",
+        "title": "How to Resolve Merge Conflicts in Git? | Atlassian Git Tutorial",
+        "url": "https://www.atlassian.com/git/tutorials/using-branches/merge-conflicts",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "high",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "Atlassian Git tutorial offering clear guidance on merge conflicts."
+      },
+      {
+        "source_id": "S5",
+        "title": "How to Create a Branch in Git? | Atlassian Git Tutorial",
+        "url": "https://www.atlassian.com/git/tutorials/using-branches",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "high",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "Atlassian Git tutorial explaining branch creation fundamentals."
+      },
+      {
+        "source_id": "S6",
+        "title": "Git - Glossary | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Glossary/Git",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "low",
+        "reachable": true,
+        "cited_in_lesson": false,
+        "note": "MDN Git glossary, valid source but not cited in the lesson."
+      },
+      {
+        "source_id": "S7",
+        "title": "loop: Wasm text instruction - WebAssembly | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/Control_flow/loop",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "low",
+        "reachable": true,
+        "cited_in_lesson": false,
+        "note": "MDN WebAssembly reference, completely irrelevant to Git."
+      },
+      {
+        "source_id": "S8",
+        "title": "block: Wasm text instruction - WebAssembly | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/Control_flow/block",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "low",
+        "reachable": true,
+        "cited_in_lesson": false,
+        "note": "MDN WebAssembly reference, completely irrelevant to Git."
+      },
+      {
+        "source_id": "B1",
+        "title": "Pro Git",
+        "url": "https://openlibrary.org/works/OL16310859W",
+        "kind": "book",
+        "reliability": "high",
+        "relevance": "medium",
+        "reachable": true,
+        "cited_in_lesson": false,
+        "note": "Pro Git book text, highly authoritative book source."
+      },
+      {
+        "source_id": "B2",
+        "title": "Git: Pocket Guide",
+        "url": "https://openlibrary.org/works/OL19548227W",
+        "kind": "book",
+        "reliability": "high",
+        "relevance": "medium",
+        "reachable": true,
+        "cited_in_lesson": false,
+        "note": "Git Pocket Guide, authoritative reference book."
+      }
+    ],
+    "issues": [
+      {
+        "id": "QC1-1",
+        "layer": "QC1",
+        "severity": "major",
+        "category": "claim unsupported",
+        "location": "[Resolving Simple Merge Conflicts]",
+        "quote": "[Resolving Simple Merge Conflicts] git diff displays detailed line-by-line differences between your working tree and staging area.",
+        "problem": "The provided text excerpts do not mention git diff or its functionality.",
+        "suggestion": "git status is shown in the text to list unmerged paths, but git diff is not covered by the evidence."
+      },
+      {
+        "id": "QC1-2",
+        "layer": "QC1",
+        "severity": "major",
+        "category": "claim unsupported",
+        "location": "[Resolving Simple Merge Conflicts]",
+        "quote": "[Resolving Simple Merge Conflicts] If you ever get stuck during a conflict, you can completely cancel the merge operation using git merge --abort.",
+        "problem": "The provided evidence excerpts do not mention git merge --abort.",
+        "suggestion": "The text does not mention git merge --abort for canceling merges."
+      },
+      {
+        "id": "QC1-3",
+        "layer": "QC1",
+        "severity": "major",
+        "category": "claim unsupported",
+        "location": "[Answer key]",
+        "quote": "[Answer key] The git merge --abort command safely stops the merge process and restores your working tree back to its pre-merge state.",
+        "problem": "None of the provided evidence excerpts mention git merge --abort.",
+        "suggestion": "The provided text does not contain references to git merge --abort."
+      },
+      {
+        "id": "QC1-4",
+        "layer": "QC1",
+        "severity": "minor",
+        "category": "unsupported claim",
+        "location": "4. Resolving Simple Merge Conflicts",
+        "quote": "git diff: Displays detailed line-by-line differences between your working tree and staging area, helping isolate what changed in conflicted files.",
+        "problem": "The text discusses git diff in the context of merge conflicts, but the independent evidence notes that git diff and git merge --abort lack direct citation coverage from the primary S1-S5 sources.",
+        "suggestion": "Add explicit citations or ensure git diff explanation focuses on standard conflict-state usage supported by existing sources."
+      }
+    ],
+    "verification_queries": [
+      "git branch pointer commit documentation",
+      "git switch command documentation",
+      "git merge fast forward three way",
+      "git merge abort documentation"
+    ],
+    "verification_sources": [
+      {
+        "title": "Git - Branches in a Nutshell",
+        "url": "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+      },
+      {
+        "title": "Git - git-switch Documentation",
+        "url": "https://git-scm.com/docs/git-switch"
+      },
+      {
+        "title": "Git - Basic Branching and Merging",
+        "url": "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging"
+      },
+      {
+        "title": "Git - Glossary | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Glossary/Git"
+      },
+      {
+        "title": "Data Version Control (software) - Wikipedia",
+        "url": "https://en.wikipedia.org/wiki/Data_Version_Control_(software)"
+      }
+    ],
+    "verification_method": "web-retrieval",
+    "lesson_version": 2,
+    "model": "gemini-3.5-flash",
+    "created_at": "2026-11-06T17:33:06+00:00"
+  },
+  "qc2": {
+    "summary": "This lesson provides a solid introduction to Git branching, merging, and conflict resolution with clear explanations and a hands-on activity. However, several core sections suffer from severe time-allocation padding where the designated minutes vastly exceed the actual reading content. Addressing these pacing discrepancies and expanding the conceptual sections will ensure a balanced and robust learning experience.",
+    "overall_score": 87,
+    "objective_coverage": [
+      {
+        "component": "Create and switch between Git branches",
+        "coverage": "full",
+        "evidence": "Section 2 provides detailed conceptual explanations and commands (git switch -c) for branch creation and switching, reinforced by the practice exercise in Section 6.",
+        "gap": ""
+      },
+      {
+        "component": "Merge a feature branch into main",
+        "coverage": "full",
+        "evidence": "Section 3 explains fast-forward and three-way merges with ASCII diagrams and step-by-step instructions, and Section 5 demonstrates the merge workflow.",
+        "gap": ""
+      },
+      {
+        "component": "Resolve a simple merge conflict",
+        "coverage": "full",
+        "evidence": "Section 4 covers conflict markers and resolution steps, Section 5 walks through an end-to-end conflict scenario, and Section 6 gives learners hands-on practice.",
+        "gap": ""
+      }
+    ],
+    "rubric": [
+      {
+        "criterion": "Objective alignment",
+        "score": 5,
+        "rationale": "Every component of the learning objective is thoroughly addressed through dedicated conceptual explanations, worked examples, and practical activities."
+      },
+      {
+        "criterion": "Clarity",
+        "score": 4,
+        "rationale": "The technical explanations of Git internals and pointers are generally clear, though some sections feel overly sparse for the allocated time."
+      },
+      {
+        "criterion": "Structure and flow",
+        "score": 5,
+        "rationale": "The lesson follows a logical sequence from hook to concepts, worked examples, hands-on practice, and knowledge checks."
+      },
+      {
+        "criterion": "Relevance and engagement",
+        "score": 4,
+        "rationale": "The introductory book-writing analogy creates a strong relatable hook, and the command-line examples are highly practical for developers."
+      },
+      {
+        "criterion": "Examples and practical application",
+        "score": 5,
+        "rationale": "The walkthrough in Section 5 and the hands-on exercise in Section 6 give concrete opportunities to apply and test the commands."
+      },
+      {
+        "criterion": "Assessment quality",
+        "score": 5,
+        "rationale": "The knowledge check features five well-crafted multiple-choice questions that directly align with the core concepts taught in the lesson."
+      },
+      {
+        "criterion": "Timing feasibility",
+        "score": 2,
+        "rationale": "Sections 2, 3, and 4 suffer from severe timing inflation, declaring 8 or 7 minutes of time while containing only 1.5 to 2.2 minutes of readable text."
+      }
+    ],
+    "timing": {
+      "budget_minutes": 45,
+      "declared_minutes": 43,
+      "estimated_reading_minutes": 11.2,
+      "estimated_total_minutes": 43.0,
+      "within_budget": true,
+      "per_section": [
+        {
+          "section": "1. The Parallel Universe Problem",
+          "kind": "hook",
+          "declared_min": 3.0,
+          "words": 128,
+          "reading_min": 0.8,
+          "estimated_min": 3.0,
+          "over": false,
+          "padded": false
+        },
+        {
+          "section": "2. Creating and Switching Git Branches",
+          "kind": "concept",
+          "declared_min": 8.0,
+          "words": 371,
+          "reading_min": 2.2,
+          "estimated_min": 8.0,
+          "over": false,
+          "padded": true
+        },
+        {
+          "section": "3. Merging Branches and Handling Three-Way Merges",
+          "kind": "concept",
+          "declared_min": 8.0,
+          "words": 300,
+          "reading_min": 1.8,
+          "estimated_min": 8.0,
+          "over": false,
+          "padded": true
+        },
+        {
+          "section": "4. Resolving Simple Merge Conflicts",
+          "kind": "concept",
+          "declared_min": 7.0,
+          "words": 256,
+          "reading_min": 1.5,
+          "estimated_min": 7.0,
+          "over": false,
+          "padded": true
+        },
+        {
+          "section": "5. End-to-End Workflow Walkthrough",
+          "kind": "worked_example",
+          "declared_min": 6.0,
+          "words": 363,
+          "reading_min": 2.1,
+          "estimated_min": 6.0,
+          "over": false,
+          "padded": false
+        },
+        {
+          "section": "6. Hands-On Conflict Resolution Practice",
+          "kind": "activity",
+          "declared_min": 7.0,
+          "words": 174,
+          "reading_min": 1.0,
+          "estimated_min": 7.0,
+          "over": false,
+          "padded": false
+        },
+        {
+          "section": "7. Knowledge Check",
+          "kind": "knowledge_check",
+          "declared_min": 2.0,
+          "words": 231,
+          "reading_min": 1.4,
+          "estimated_min": 2.0,
+          "over": false,
+          "padded": false
+        },
+        {
+          "section": "8. Summary and Next Steps",
+          "kind": "summary",
+          "declared_min": 2.0,
+          "words": 75,
+          "reading_min": 0.4,
+          "estimated_min": 2.0,
+          "over": false,
+          "padded": false
+        }
+      ],
+      "note": "Fits the 45-min budget on paper, but these sections have far less text than their minutes suggest (thin content or padded timing): 2. Creating and Switching Git Branches; 3. Merging Branches and Handling Three-Way Merges; 4. Resolving Simple Merge Conflicts."
+    },
+    "structure_checks": [
+      {
+        "check": "Opens with a hook",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Has concept explanation sections",
+        "passed": true,
+        "detail": "3 found"
+      },
+      {
+        "check": "Has a worked example",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Has a hands-on activity",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Has a knowledge check with >= 4 questions",
+        "passed": true,
+        "detail": "5 questions"
+      },
+      {
+        "check": "Ends with a summary",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Fits the time budget",
+        "passed": true,
+        "detail": "Fits the 45-min budget on paper, but these sections have far less text than their minutes suggest (thin content or padded timing): 2. Creating and Switching Git Branches; 3. Merging Branches and Handling Three-Way Merges; 4. Resolving Simple Merge Conflicts."
+      },
+      {
+        "check": "No truncated sections",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Section times match their content",
+        "passed": false,
+        "detail": "2. Creating and Switching Git Branches: 8 min for ~2.2 min of text; 3. Merging Branches and Handling Three-Way Merges: 8 min for ~1.8 min of text; 4. Resolving Simple Merge Conflicts: 7 min for ~1.5 min of text"
+      },
+      {
+        "check": "Concept/example sections cite sources",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Includes supplementary YouTube videos",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Includes a reference list",
+        "passed": true,
+        "detail": ""
+      }
+    ],
+    "issues": [
+      {
+        "id": "QC2-1",
+        "layer": "QC2",
+        "severity": "major",
+        "category": "structure check",
+        "location": "Whole lesson",
+        "quote": "",
+        "problem": "Automatic check failed: Section times match their content. 2. Creating and Switching Git Branches: 8 min for ~2.2 min of text; 3. Merging Branches and Handling Three-Way Merges: 8 min for ~1.8 min of text; 4. Resolving Simple Merge Conflicts: 7 min for ~1.5 min of text",
+        "suggestion": "Adjust section minutes so they add up to the budget."
+      },
+      {
+        "id": "QC2-2",
+        "layer": "QC2",
+        "severity": "major",
+        "category": "Timing feasibility",
+        "location": "2. Creating and Switching Git Branches",
+        "quote": "Creating and Switching Git Branches (8 min)",
+        "problem": "The allocated time of 8 minutes is heavily padded for only ~2.2 minutes of reading text, leading to potential learner pacing issues.",
+        "suggestion": "Either reduce the section time to 3 minutes or expand the text with deeper explanations of commit hashes and interactive terminal check-ins."
+      },
+      {
+        "id": "QC2-3",
+        "layer": "QC2",
+        "severity": "major",
+        "category": "Timing feasibility",
+        "location": "3. Merging Branches and Handling Three-Way Merges",
+        "quote": "Merging Branches and Handling Three-Way Merges (8 min)",
+        "problem": "An 8-minute time allocation for approximately 1.8 minutes of reading text leaves a significant pacing gap.",
+        "suggestion": "Adjust the time allocation downward to match the content length or add guided practice prompts within the section."
+      },
+      {
+        "id": "QC2-4",
+        "layer": "QC2",
+        "severity": "major",
+        "category": "Timing feasibility",
+        "location": "4. Resolving Simple Merge Conflicts",
+        "quote": "Resolving Simple Merge Conflicts (7 min)",
+        "problem": "The declared 7-minute duration contains only about 1.5 minutes of text, creating an imbalance between expected time and actual reading content.",
+        "suggestion": "Scale down the timer for this section to 3 minutes or add more detailed troubleshooting instructions for complex conflict scenarios."
+      }
+    ],
+    "lesson_version": 2,
+    "model": "gemini-3.5-flash",
+    "created_at": "2026-11-06T17:32:53+00:00"
+  },
+  "applied_issue_ids": [
+    "QC1-1",
+    "QC1-2",
+    "QC2-2",
+    "QC2-3",
+    "QC2-4",
+    "QC2-5",
+    "QC2-6"
+  ]
+}

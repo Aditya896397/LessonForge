@@ -1,0 +1,1036 @@
+{
+  "id": "git-branching-and-merging-f520ad",
+  "title": "Git Branching and Merging",
+  "objective": "Create and switch between Git branches, merge a feature branch into main, and resolve a simple merge conflict.",
+  "created_at": "2026-11-06T17:30:36+00:00",
+  "updated_at": "2026-11-06T17:33:06+00:00",
+  "steps": {
+    "research": {
+      "status": "done",
+      "error": "",
+      "attempts": 1,
+      "started_at": "2026-11-06T17:30:36+00:00",
+      "finished_at": "2026-11-06T17:30:58+00:00"
+    },
+    "generate": {
+      "status": "done",
+      "error": "",
+      "attempts": 1,
+      "started_at": "2026-11-06T17:30:58+00:00",
+      "finished_at": "2026-11-06T17:31:21+00:00"
+    },
+    "qc1": {
+      "status": "done",
+      "error": "",
+      "attempts": 2,
+      "started_at": "2026-11-06T17:32:48+00:00",
+      "finished_at": "2026-11-06T17:33:06+00:00"
+    },
+    "qc2": {
+      "status": "done",
+      "error": "",
+      "attempts": 2,
+      "started_at": "2026-11-06T17:32:48+00:00",
+      "finished_at": "2026-11-06T17:32:53+00:00"
+    }
+  },
+  "research": {
+    "notes": "## 1. Objective breakdown\n- Create Git branches [S5].\n- Switch between Git branches [S1].\n- Merge a feature branch into main [S4].\n- Resolve a simple merge conflict [S1, S4].\n\n## 2. Core definitions and facts\n- **Git branch:** A lightweight, movable pointer to a commit, rather than a container for commits or a directory copy [S5]. It represents an independent line of development [S5].\n- **HEAD:** A reference pointing to the current branch or commit you have checked out [S4].\n- **Merge conflict:** Occurs when two separate branches have modified the same part or lines of a file differently, and Git cannot automatically determine what is correct [S1, S4].\n- **Conflict resolution markers:** Standard markers added by Git (`<<<<<<<`, `=======`, `>>>>>>>`) to designate conflicting blocks between the local branch (HEAD) and the incoming branch [S1, S4].\n- **Three-way merge:** A merge process used by Git when development histories have diverged from a common ancestor, utilizing two branch tips and their common ancestor [S1].\n\n## 3. Detailed notes per objective component\n- **Create Git branches:** Branches in Git are pointers to a commit [S5]. Creating a branch only creates a new pointer and does not alter the repository or working directory in any other way [S1, S5]. Commands like `git branch <branch>` create a branch, while `git switch -c <new-branch>` or `git checkout -b <branch>` create and switch to it simultaneously [S1, S3].\n- **Switch between Git branches:** Switching branches updates the working directory to match the snapshot of the target branch's last commit [S1]. Git automatically adds, removes, and modifies files to match that state [S1]. Git normally refuses to switch if uncommitted changes or staging area modifications conflict with the target branch [S1, S3].\n- **Merge a feature branch into main:** Merging combines separate branches and resolves conflicting edits [S4]. When histories have diverged, Git performs a three-way merge using the two branch tips and their common ancestor [S1]. \n- **Resolve a simple merge conflict:** When a merge fails due to conflicting edits on the same lines, Git pauses the process and marks the files as unmerged [S1, S4]. The developer must open the conflicted file, edit or remove the conflict resolution markers (`<<<<<<<`, `=======`, `>>>>>>>`), choose or combine the code changes, stage the resolved file using `git add`, and complete the merge with `git commit` [S1, S4]. A merge can be aborted using `git merge --abort` [S4].\n\n## 4. Worked example ideas\n- **Example 1: Creating and Switching Branches**\n  - Initialize a repo and make an initial commit:\n    ```bash\n    mkdir git-demo && cd git-demo\n    git init\n    echo \"initial content\" > index.html\n    git add index.html\n    git commit -m \"initial commit\"\n    ```\n  - Create and switch to a new feature branch using `git switch`:\n    ```bash\n    git switch -c iss53\n    ```\n- **Example 2: Simulating and Resolving a Merge Conflict**\n  - On `main`, append content to `merge.txt` and commit [S4]:\n    ```bash\n    git checkout main\n    echo \"content to append\" >> merge.txt\n    git commit -am \"appended content to merge.txt\"\n    ```\n  - On a separate branch (`new_branch_to_merge_later`), edit the same line differently and commit [S4]:\n    ```bash\n    git checkout new_branch_to_merge_later\n    echo \"totally different content to merge later\" > merge.txt\n    git commit -am \"edited content to cause a conflict\"\n    ```\n  - Attempt to merge `new_branch_to_merge_later` into `main`, observe the conflict, view status, inspect markers, resolve manually, stage, and commit [S1, S4].\n\n## 5. Practical, real-world applications\n- **Feature isolation:** Allowing multiple developers or teams to work on isolated features or bug fixes in parallel without contaminating the stable `main` codebase [S4, S5].\n- **Safe experimentation:** Testing new ideas or risky changes on a separate branch before deciding whether to merge or discard them [S5].\n\n## 6. Common misconceptions and pitfalls\n- **Misconception:** Branches are heavy directories or containers that duplicate project files [S5].\n  - *Correct understanding:* Git branches are ultra-lightweight pointers to individual commits [S5].\n- **Misconception:** Switching branches modifies files without needing a clean working state.\n  - *Correct understanding:* Git prevents switching when uncommitted changes conflict with the target branch to protect your work [S1, S3].\n- **Misconception:** Git automatically resolves all overlapping line edits during a merge.\n  - *Correct understanding:* When identical lines are modified differently, Git halts the merge, adds conflict markers, and requires manual intervention [S1, S4].\n\n## 7. Hands-on activity ideas\n- **Activity 1: Branch Creation and Context Switching (10 minutes)**\n  - Task: Create a repository, add a file named `hello.txt`, create a new branch named `feature`, switch to it, add a new line to `hello.txt`, commit it, switch back to `main`, verify the file reverts to its original state, and then merge `feature` into `main` [S1].\n- **Activity 2: Conflict Resolution Challenge (10 minutes)**\n  - Task: Create a merge conflict by editing the same line of a text file in two different branches, run `git merge`, use `git status` to locate the unmerged file, manually clear the conflict markers by choosing the correct code block, stage the file, and commit the resolution [S1, S4].\n\n## 8. Nuances and points of disagreement\n- The source excerpts do not detail advanced conflict resolution tools beyond mentioning `git mergetool` [S1] and basic text editor conflict markers [S1, S4], nor do they deeply contrast older commands (`git checkout`) with modern ones (`git switch` / `git restore`), though both are referenced [S1, S2, S3].",
+    "search_queries": [
+      "Git branch documentation",
+      "Git merge basics",
+      "Git resolve merge conflict",
+      "Pro Git branching"
+    ],
+    "method": "web-retrieval",
+    "sources": [
+      {
+        "id": "S1",
+        "kind": "web",
+        "title": "Git - Basic Branching and Merging",
+        "url": "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging",
+        "publisher": "git-scm.com",
+        "snippet": "3. Git Branching 3.1 Branches in a Nutshell 3.2 Basic Branching and Merging 3.3 Branch Management 3.4 Branching Workflows 3.5 Remote Branches 3.6 Rebasing 3.7 Summary\nA3. Appendix C: Git Commands A3.1 Setup and Config A3.2 Getting and Creating Projects A3.3 Basic Snapshotting A3.4 Branching and Merging A3.5 Sharing and Updating Projects A3.6 Inspection and Comparison A3.7 Debugging A3.8 Patching A3.9 Email A3.10 External Systems A3.11 Administration A3.12 Plumbing Commands\n$ git checkout -b iss53 Switched to a new branch \"iss53\"\n$ git branch iss53 $ git checkout iss53\nHowever, before you do that, note that if your working directory or staging area has uncommitted changes that conflict with the branch you’re checking out, Git won’t let you switch branches. It’s best to have a clean working state when you switch branches. There are ways to get around this (namely, stashing and commit amending) that we’ll cover later on, in Stashing and Cleaning . For now, let’s assume you’ve committed all your changes, so you can switch back to your master branch:\nAt this point, your project working directory is exactly the way it was before you started working on issue #53, and you can concentrate on your hotfix. This is an important point to remember: when you switch branches, Git resets your working directory to look like it did the last time you committed on that branch. It adds, removes, and modifies files automatically to make sure your working copy is what the branch looked like on your ",
+        "reachable": true,
+        "http_status": 200,
+        "source_type": "official documentation",
+        "trust_hint": "high"
+      },
+      {
+        "id": "S2",
+        "kind": "web",
+        "title": "Git - git-branch Documentation",
+        "url": "https://git-scm.com/docs/git-branch",
+        "publisher": "git-scm.com",
+        "snippet": "When creating a new branch, set up branch. <name> .remote and branch. <name> .merge configuration entries to set \"upstream\" tracking configuration for the new branch. This configuration will tell git to show the relationship between the two branches in git status and git branch -v . Furthermore, it directs git pull without arguments to pull from the upstream when the new branch is checked out. The exact upstream branch is chosen depending on the optional argument: -t , --track , or --track=direct means to use the start-point branch itself as the upstream; --track=inherit means to copy the upstream configuration of the start-point branch. The branch.autoSetupMerge configuration variable specifies how git switch , git checkout and git branch should behave when neither --track nor --no-track are specified: The default option, true , behaves as though --track=direct were given whenever the start-point is a remote-tracking branch. false behaves as if --no-track were given. always behaves as though --track=direct were given. inherit behaves as though --track=inherit were given. simple behaves as though --track=direct were given only when the <start-point> is a remote-tracking branch and \nTHIS OPTION IS EXPERIMENTAL! Cause the current command to recurse into submodules if submodule.propagateBranches is enabled. See submodule.propagateBranches in git-config[1] . Currently, only branch creation is supported. When used in branch creation, a new branch <branch-name> will be created in t",
+        "reachable": true,
+        "http_status": 200,
+        "source_type": "official documentation",
+        "trust_hint": "high"
+      },
+      {
+        "id": "S3",
+        "kind": "web",
+        "title": "Git - git-switch Documentation",
+        "url": "https://git-scm.com/docs/git-switch",
+        "publisher": "git-scm.com",
+        "snippet": "git switch [ <options> ] [ --no-guess ] <branch> git switch [ <options> ] --detach [ <start-point> ] git switch [ <options> ] ( -c | -C ) <new-branch> [ <start-point> ] git switch [ <options> ] --orphan <new-branch>\nThe starting point for the new branch. Specifying a <start-point> allows you to create a branch based on some other point in history than where HEAD currently points. (Or, in the case of --detach , allows you to inspect and detach from some other point.) You can use the @{- <N> } syntax to refer to the <N> -th last branch/commit switched to using git switch or git checkout operation. You may also specify - which is synonymous to @{-1} . This is often used to switch quickly between two branches, or to undo a branch switch by mistake. As a special case, you may use <rev-a> ... <rev-b> as a shortcut for the merge base of <rev-a> and <rev-b> if there is exactly one merge base. You can leave out at most one of <rev-a> and <rev-b> , in which case it defaults to HEAD .\nYou can use the @{- <N> } syntax to refer to the <N> -th last branch/commit switched to using git switch or git checkout operation. You may also specify - which is synonymous to @{-1} . This is often used to switch quickly between two branches, or to undo a branch switch by mistake.\n$ git branch <new-branch> $ git switch <new-branch>\n$ git branch -f _<new-branch>_ $ git switch _<new-branch>_\nIf <branch> is not found but there does exist a tracking branch in exactly one remote (call it <remote> ) with a mat",
+        "reachable": true,
+        "http_status": 200,
+        "source_type": "official documentation",
+        "trust_hint": "high"
+      },
+      {
+        "id": "S4",
+        "kind": "web",
+        "title": "How to Resolve Merge Conflicts in Git? | Atlassian Git Tutorial",
+        "url": "https://www.atlassian.com/git/tutorials/using-branches/merge-conflicts",
+        "publisher": "atlassian.com",
+        "snippet": "Version control systems are all about managing contributions between multiple distributed authors ( usually developers ). Sometimes multiple developers may try to edit the same content. If Developer A tries to edit code that Developer B is editing a conflict may occur. To alleviate the occurrence of conflicts developers will work in separate isolated branches . The git merge command's primary responsibility is to combine separate branches and resolve any conflicting edits.\nConflicts generally arise when two people have changed the same lines in a file, or if one developer deleted a file while another developer was modifying it. In these cases, Git cannot automatically determine what is correct. Conflicts only affect the developer conducting the merge, the rest of the team is unaware of the conflict. Git will mark the file as being conflicted and halt the merging process. It is then the developers' responsibility to resolve the conflict.\nA failure DURING a merge indicates a conflict between the current local branch and the branch being merged. This indicates a conflict with another developers code. Git will do its best to merge the files but will leave things for you to resolve manually in the conflicted files. A mid-merge failure will output the following error message:\nIn order to get real familiar with merge conflicts, the next section will simulate a conflict to later examine and resolve. The example will be using a Unix-like command-line Git interface to execute the examp",
+        "reachable": true,
+        "http_status": 200,
+        "source_type": "vendor learning centre",
+        "trust_hint": "medium"
+      },
+      {
+        "id": "S5",
+        "kind": "web",
+        "title": "How to Create a Branch in Git? | Atlassian Git Tutorial",
+        "url": "https://www.atlassian.com/git/tutorials/using-branches",
+        "publisher": "atlassian.com",
+        "snippet": "This document is an in-depth review of the git branch command and a discussion of the overall Git branching model. Branching is a feature available in most modern version control systems. Branching in other VCS's can be an expensive operation in both time and disk space. In Git, branches are a part of your everyday development process.\nGit branches are effectively a pointer to a snapshot of your changes. When you want to add a new feature or fix a bug—no matter how big or how small—you spawn a new branch to encapsulate your changes. This makes it harder for unstable code to get merged into the main code base, and it gives you the chance to clean up your future's history before merging it into the main branch.\nThe diagram above visualizes a repository with two isolated lines of development, one for a little feature, and one for a longer-running feature. By developing them in branches, it’s not only possible to work on both of them in parallel, but it also keeps the main branch free from questionable code.\nThe implementation behind Git branches is much more lightweight than other version control system models. Instead of copying files from directory to directory, Git stores a branch as a reference to a commit. In this sense, a branch represents the tip of a series of commits—it's not a container for commits. The history for a branch is extrapolated through the commit relationships.\nAs you read, remember that Git branches aren't like SVN branches. Whereas SVN branches are only u",
+        "reachable": true,
+        "http_status": 200,
+        "source_type": "vendor learning centre",
+        "trust_hint": "medium"
+      },
+      {
+        "id": "S6",
+        "kind": "web",
+        "title": "Git - Glossary | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Glossary/Git",
+        "publisher": "developer.mozilla.org",
+        "snippet": "Git is a free, open-source, distributed Source Code Management ( SCM ) system. It facilitates handling code bases with distributed development teams. What sets it apart from previous SCM systems is the ability to do common operations (branching, committing, etc.) on your local development machine, without having to change the master repository or even having write access to it.\nGitHub , a Git-based graphical project host\nThis page was last modified on Jul 11, 2025 by MDN contributors .",
+        "reachable": true,
+        "http_status": 200,
+        "source_type": "official documentation",
+        "trust_hint": "high"
+      },
+      {
+        "id": "S7",
+        "kind": "web",
+        "title": "loop: Wasm text instruction - WebAssembly | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/Control_flow/loop",
+        "publisher": "developer.mozilla.org",
+        "snippet": "The loop statement creates a label that can later be branched to with a br . The loop instruction doesn't loop by itself; you need to branch to it to actually create a loop.\nThe loop statement is the opposite of the block statement, in the sense that while branching to a loop jumps to the beginning of the loop, branching to a block jumps to the end of the block, that is, out of the block.\n(module ;; import the browser console object, you'll need to pass this in from JavaScript (import \"console\" \"log\" (func $log (param i32))) (func ;; create a local variable and initialize it to 0 (local $i i32) (loop $my_loop ;; add one to $i local.get $i i32.const 1 i32.add local.set $i ;; log the current value of $i local.get $i call $log ;; if $i is less than 10 branch to loop local.get $i i32.const 10 i32.lt_s br_if $my_loop ) ) (start 1) ;; run the first function automatically )\n;; label the loop so that it can be branched to (loop $my_loop ;; branch to the loop. ;; most of the time you'll want to put this in an if statement and only branch on condition, ;; otherwise you have an infinite loop. br $my_loop )\nThis page was last modified on Jul 19, 2026 by MDN contributors .",
+        "reachable": true,
+        "http_status": 200,
+        "source_type": "official documentation",
+        "trust_hint": "high"
+      },
+      {
+        "id": "S8",
+        "kind": "web",
+        "title": "block: Wasm text instruction - WebAssembly | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/Control_flow/block",
+        "publisher": "developer.mozilla.org",
+        "snippet": "The loop statement is the opposite of the block statement, in the sense that while branching to a loop jumps to the beginning of the loop, branching to a block jumps to the end of the block; that is, out of the block.\n(module ;; import the browser console object, you'll need to pass this in from JavaScript (import \"console\" \"log\" (func $log (param i32))) ;; create a function that takes in a number as a param, ;; and logs that number if it's not equal to 100. (func (export \"log_if_not_100\") (param $num i32) (block $my_block ;; $num is equal to 100 local.get $num i32.const 100 i32.eq (if (then ;; branch to the end of the block br $my_block ) ) ;; not reachable when $num is 100 local.get $num call $log ) ) )\nconst url = \"{%wasm-url%}\"; await WebAssembly.instantiateStreaming(fetch(url), { console }).then( (result) => { const log_if_not_100 = result.instance.exports.log_if_not_100; log_if_not_100(99); // Expected output: 99 log_if_not_100(100); // Should not log anything log_if_not_100(101); // Expected output: 101 }, );\n;; label the block so that it can be branched to. (block $my_block ;; branch to the block. ;; most of the time you'll want to put this in an if statement and only branch on condition, ;; otherwise the following control flow are unreachable. br $my_block ;; this will never be reached, since the br jumped out of the block already. unreachable )\nThis page was last modified on Jul 19, 2026 by MDN contributors .",
+        "reachable": true,
+        "http_status": 200,
+        "source_type": "official documentation",
+        "trust_hint": "high"
+      }
+    ],
+    "books": [
+      {
+        "id": "B1",
+        "kind": "book",
+        "title": "Pro Git",
+        "url": "https://openlibrary.org/works/OL16310859W",
+        "publisher": "Scott Chacon, Ben Straub · Springer · 2009",
+        "snippet": "",
+        "reachable": true,
+        "http_status": null,
+        "source_type": "book (verified in Open Library)",
+        "trust_hint": "medium"
+      },
+      {
+        "id": "B2",
+        "kind": "book",
+        "title": "Git: Pocket Guide",
+        "url": "https://openlibrary.org/works/OL19548227W",
+        "publisher": "Richard E. Silverman · O'Reilly Media · 2013",
+        "snippet": "",
+        "reachable": true,
+        "http_status": null,
+        "source_type": "book (verified in Open Library)",
+        "trust_hint": "medium"
+      }
+    ],
+    "videos": [
+      {
+        "id": "V1",
+        "video_id": "DloR0BOGNU0",
+        "title": "Never fear merge conflicts again - git merge/pull tutorial",
+        "url": "https://www.youtube.com/watch?v=DloR0BOGNU0",
+        "channel": "Philomatics",
+        "duration_text": "5:12",
+        "duration_seconds": 312,
+        "views_text": "204,846 views",
+        "verified": true
+      },
+      {
+        "id": "V2",
+        "video_id": "e9lnsKot_SQ",
+        "title": "How Git Works: Explained in 4 Minutes",
+        "url": "https://www.youtube.com/watch?v=e9lnsKot_SQ",
+        "channel": "ByteByteGo",
+        "duration_text": "4:18",
+        "duration_seconds": 258,
+        "views_text": "1,037,843 views",
+        "verified": true
+      },
+      {
+        "id": "V3",
+        "video_id": "ZCh6liwJ8WA",
+        "title": "Master Git Branching & Merging | Git & GitHub Crash Course Tamil - Part 2",
+        "url": "https://www.youtube.com/watch?v=ZCh6liwJ8WA",
+        "channel": "Aravindh Shanmugam",
+        "duration_text": "13:59",
+        "duration_seconds": 839,
+        "views_text": "9,009 views",
+        "verified": true
+      },
+      {
+        "id": "V4",
+        "video_id": "20WG5DWZggQ",
+        "title": "How to resolve merge conflict in GIT - Simple steps",
+        "url": "https://www.youtube.com/watch?v=20WG5DWZggQ",
+        "channel": "TechHelp",
+        "duration_text": "9:22",
+        "duration_seconds": 562,
+        "views_text": "563 views",
+        "verified": true
+      },
+      {
+        "id": "V5",
+        "video_id": "QV0kVNvkMxc",
+        "title": "Git & GitHub Tutorial for Beginners #8 - Branches",
+        "url": "https://www.youtube.com/watch?v=QV0kVNvkMxc",
+        "channel": "Net Ninja",
+        "duration_text": "10:07",
+        "duration_seconds": 607,
+        "views_text": "398,034 views",
+        "verified": true
+      },
+      {
+        "id": "V6",
+        "video_id": "gxFosH9yGbI",
+        "title": "GIT in Tamil #6 | How to Resolve Git Merge Conflicts? | Git Tutorial",
+        "url": "https://www.youtube.com/watch?v=gxFosH9yGbI",
+        "channel": "SELVA Tech & ITOps",
+        "duration_text": "12:25",
+        "duration_seconds": 745,
+        "views_text": "23,365 views",
+        "verified": true
+      }
+    ],
+    "warnings": [
+      "Sources were found by fetching pages directly (model-proposed pages + Wikipedia/MDN search), not Google Search grounding. Pages used by origin: proposed: 5, mdn: 3.",
+      "3 of 8 model-proposed URLs were not used (missing, unreadable or less relevant than other pages).",
+      "Google Books unavailable (HTTPError); using Open Library.",
+      "Dropped book suggestion that could not be verified: 'Version Control with Git' (Jon Loeliger and Matthew McCullough)",
+      "Dropped unverifiable video 1pwOLYnNDLo"
+    ],
+    "created_at": "2026-11-06T17:30:58+00:00"
+  },
+  "draft": {
+    "title": "Git Branching and Merging",
+    "learning_objective": "Create and switch between Git branches, merge a feature branch into main, and resolve a simple merge conflict.",
+    "target_audience": "Beginner developers and learners who know basic Git commands (like git init, git add, and git commit) and want to learn parallel workflows.",
+    "prerequisites": [
+      "Basic familiarity with the command line",
+      "Understanding of basic Git tracking, staging, and committing"
+    ],
+    "success_criteria": [
+      "You can create a new Git branch and switch between branches using modern and traditional commands.",
+      "You can merge a separate feature branch back into the main branch.",
+      "You can identify, manually resolve, and finalize a merge conflict using conflict markers."
+    ],
+    "sections": [
+      {
+        "heading": "The Parallel Universe Problem",
+        "kind": "hook",
+        "minutes": 3,
+        "content_markdown": "### Imagine Working on a Shared Book\n\nImagine you and a co-author are writing a book together. If both of you write directly on the exact same master manuscript at the same time, chaos ensues. Words get overwritten, paragraphs clash, and nobody knows which version is correct. In software development, working directly on the primary line of code (`main`) for every new feature or bug fix creates that exact chaos.\n\nGit solves this with **branches**. Instead of modifying your stable project directly, you can spin off into a separate parallel universe—a branch—where you can experiment safely. Once your feature is complete and working, you bring it back together. Let's learn how to manage these parallel worlds without breaking your project [S4, S5].",
+        "source_ids": [
+          "S4",
+          "S5"
+        ]
+      },
+      {
+        "heading": "Creating and Switching Git Branches",
+        "kind": "concept",
+        "minutes": 8,
+        "content_markdown": "### What is a Git Branch?\n\nA common misconception is that a Git branch is a heavy directory or a physical copy of your project files [S5]. In reality, a **Git branch** is simply a lightweight, movable pointer to a specific commit [S5]. When you create a branch, Git does not duplicate your files; it just places a tiny new sticky note pointing to the current commit history [S1, S5].\n\n### The HEAD Pointer\n\nYour repository always maintains a special reference called **HEAD** [S4]. **HEAD** is a pointer pointing to the current branch or commit you have checked out in your working directory [S4]. When you switch branches, HEAD moves to point to the new branch.\n\n### Commands for Creation and Switching\n\nTo create a branch without switching to it, use:\n```bash\ngit branch <branch-name>\n```\nTo switch to an existing branch, or create and switch in one go, you can use modern commands:\n```bash\ngit switch -c <new-branch-name>\n```\nAlternatively, traditional commands include `git checkout -b <branch-name>` [S1, S3].\n\n### Example\n\nSuppose you have initialized a repository and made your first commit. To create and switch to a feature branch called `iss53`:\n```bash\ngit switch -c iss53\n```\nThis instantly creates the pointer and moves your HEAD to `iss53` [S1, S3].\n\n### Common Mistake\n\n* **Misconception:** Switching branches modifies files without needing a clean working state.\n* **Correct understanding:** Git normally refuses to switch if your uncommitted changes or staging area modifications conflict with the target branch, protecting your work from accidental overwrites [S1, S3].",
+        "source_ids": [
+          "S1",
+          "S3",
+          "S4",
+          "S5"
+        ]
+      },
+      {
+        "heading": "Merging Branches and Handling Three-Way Merges",
+        "kind": "concept",
+        "minutes": 8,
+        "content_markdown": "### Bringing Work Together\n\nOnce you finish developing a feature on your isolated branch, you need to integrate those changes back into your main line of development (`main`). This process is called **merging** [S4].\n\n### The Three-Way Merge\n\nWhen the histories of your branches have diverged—meaning `main` has moved forward with other commits while your feature branch has also moved forward—Git cannot simply slide a pointer forward (a fast-forward merge). Instead, Git performs a **three-way merge** [S1]. A three-way merge utilizes two branch tips and their closest common ancestor commit to synthesize a new commit containing the combined work [S1].\n\n### Example Workflow\n\nTo merge a feature branch into `main`:\n1. Switch to your destination branch (`main`):\n   ```bash\n   git switch main\n   ```\n2. Run the merge command targeting your feature branch:\n   ```bash\n   git merge iss53\n   ```\nGit will automatically combine non-overlapping changes and create a new merge commit [S1, S4].",
+        "source_ids": [
+          "S1",
+          "S4"
+        ]
+      },
+      {
+        "heading": "Resolving Simple Merge Conflicts",
+        "kind": "concept",
+        "minutes": 7,
+        "content_markdown": "### What is a Merge Conflict?\n\nA **merge conflict** occurs when two separate branches have modified the exact same part or lines of a file in different ways, and Git cannot automatically determine which version is correct [S1, S4]. \n\n### Conflict Resolution Markers\n\nWhen a conflict happens, Git pauses the merge process, marks the affected file as unmerged, and injects standard **conflict resolution markers** directly into the code [S1, S4]:\n- `<<<<<<< HEAD`: Designates the changes present in your current local branch.\n- `=======`: The dividing line separating your changes from the incoming branch.\n- `>>>>>>> iss53`: Designates the changes coming from the incoming branch being merged.\n\n### The Resolution Steps\n\n1. Open the conflicted file in your text editor.\n2. Locate and edit out the conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`), choosing which code to keep or combining them [S1, S4].\n3. Stage the resolved file using:\n   ```bash\n   git add <filename>\n   ```\n4. Complete the merge by committing:\n   ```bash\n   git commit\n   ```\nIf you ever get stuck during a conflict, you can completely cancel the merge operation using `git merge --abort` [S4].",
+        "source_ids": [
+          "S1",
+          "S4"
+        ]
+      },
+      {
+        "heading": "End-to-End Workflow Walkthrough",
+        "kind": "worked_example",
+        "minutes": 6,
+        "content_markdown": "### Putting It All Together\n\nLet's walk through a complete end-to-end scenario involving branch creation, parallel edits, a merge conflict, and its resolution.\n\n#### Step 1: Initialize and Create Base File\n```bash\nmkdir git-demo && cd git-demo\ngit init\necho \"initial content\" > merge.txt\ngit add merge.txt\ngit commit -m \"initial commit\"\n```\n\n#### Step 2: Create a Conflict on Main\nWe stay on `main` and modify `merge.txt` [S4]:\n```bash\necho \"content to append on main\" >> merge.txt\ngit commit -am \"appended content to merge.txt on main\"\n```\n\n#### Step 3: Create a Branch and Create a Conflicting Edit\nWe switch to a new branch and edit that exact same line differently [S4]:\n```bash\ngit switch -c feature-branch\necho \"totally different content on feature\" > merge.txt\ngit commit -am \"edited content to cause a conflict\"\n```\n\n#### Step 4: Merge and Encounter Conflict\nWe switch back to `main` and attempt to merge `feature-branch` [S1, S4]:\n```bash\ngit switch main\ngit merge feature-branch\n```\nGit reports an automatic merge failure and marks `merge.txt` as unmerged [S1, S4].\n\n#### Step 5: Resolve and Commit\nOpening `merge.txt` reveals the markers. We edit the file to keep our desired text, save it, stage it, and commit [S1, S4]:\n```bash\ngit add merge.txt\ngit commit -m \"resolved merge conflict\"\n```\nOur repository is now clean and fully updated.",
+        "source_ids": [
+          "S1",
+          "S4"
+        ]
+      },
+      {
+        "heading": "Hands-On Conflict Resolution Practice",
+        "kind": "activity",
+        "minutes": 7,
+        "content_markdown": "### Practice Exercise\n\nPerform the following steps locally to practice creating branches and resolving conflicts:\n\n1. Create a new directory, run `git init`, create a file called `hello.txt` containing the text `Hello World`, and make your first commit [S1].\n2. Create and switch to a new branch called `update-greeting` [S1, S3].\n3. Modify `hello.txt` to read `Hello Git Branching` and commit the change [S1].\n4. Switch back to `main` [S1]. Verify that `hello.txt` reverts back to `Hello World`.\n5. Modify `hello.txt` on `main` to read `Hello Main Branch` and commit [S1, S4].\n6. Merge `update-greeting` into `main` to trigger a conflict [S1, S4].\n7. Use `git status` to find the conflicted file, open it, remove the conflict markers, stage the file with `git add`, and finish with `git commit` [S1, S4].\n\n**Expected Result:** A successful commit resolving the conflict, with `hello.txt` containing your final edited text.",
+        "source_ids": [
+          "S1",
+          "S3",
+          "S4"
+        ]
+      },
+      {
+        "heading": "Knowledge Check",
+        "kind": "knowledge_check",
+        "minutes": 2,
+        "content_markdown": "Answer the following questions to test your understanding of Git branching, merging, and conflict resolution.",
+        "source_ids": [
+          "S1",
+          "S4",
+          "S5"
+        ]
+      },
+      {
+        "heading": "Summary and Next Steps",
+        "kind": "summary",
+        "minutes": 2,
+        "content_markdown": "### Lesson Recap\n\nYou have successfully learned how to create and switch between Git branches, merge independent work streams using three-way merges, and manually resolve merge conflicts using conflict resolution markers [S1, S4, S5]. These skills form the backbone of safe, collaborative software development.\n\n### Next Step\n\nPractice publishing your branches to a remote repository like GitHub using `git push -u origin <branch-name>` to collaborate with other developers in remote environments.",
+        "source_ids": [
+          "S1",
+          "S4",
+          "S5"
+        ]
+      }
+    ],
+    "quiz": [
+      {
+        "question": "What is a Git branch fundamentally?",
+        "options": [
+          "A heavy directory container that duplicates your project files",
+          "A lightweight, movable pointer to a commit",
+          "A remote server backup of your code history",
+          "An automated testing environment"
+        ],
+        "correct_option_index": 1,
+        "explanation": "Git branches are ultra-lightweight pointers to individual commits rather than duplicate directories or physical file containers."
+      },
+      {
+        "question": "Which command creates a new branch and switches to it simultaneously?",
+        "options": [
+          "git branch new-feature",
+          "git switch -c new-feature",
+          "git checkout main new-feature",
+          "git merge new-feature"
+        ],
+        "correct_option_index": 1,
+        "explanation": "The `git switch -c <new-branch>` command (along with the older `git checkout -b`) creates a new branch and checks it out immediately."
+      },
+      {
+        "question": "When does Git perform a three-way merge?",
+        "options": [
+          "When three different developers are working on the same file",
+          "When development histories have diverged from a common ancestor commit",
+          "Whenever you run git status",
+          "When a merge conflict is successfully resolved and committed"
+        ],
+        "correct_option_index": 1,
+        "explanation": "A three-way merge is used when branch histories have diverged, utilizing the two branch tips and their common ancestor."
+      },
+      {
+        "question": "What do the conflict resolution markers like `<<<<<<<` and `>>>>>>>` indicate in a file?",
+        "options": [
+          "Syntax errors introduced by programming language compilers",
+          "Encrypted security signatures for code verification",
+          "Conflicting blocks of code between your local branch (HEAD) and the incoming branch",
+          "Temporary backup files created automatically by your text editor"
+        ],
+        "correct_option_index": 2,
+        "explanation": "Git inserts these markers to visibly designate and separate conflicting edits between the local HEAD and the incoming branch."
+      },
+      {
+        "question": "You encounter a complex merge conflict and want to completely cancel the merge process and return to safety. What command should you run?",
+        "options": [
+          "git reset --hard",
+          "git branch -D",
+          "git merge --abort",
+          "git checkout --clean"
+        ],
+        "correct_option_index": 2,
+        "explanation": "The `git merge --abort` command safely stops the merge process and restores your working tree back to its pre-merge state."
+      }
+    ],
+    "key_takeaways": [
+      "A Git branch is a lightweight, movable pointer to a specific commit, not a duplicate file container.",
+      "The HEAD reference points to your currently active branch or commit.",
+      "Modern commands like `git switch -c` allow you to create and jump into a new branch instantly.",
+      "Diverged branches require a three-way merge combining branch tips and their common ancestor.",
+      "Merge conflicts require manual intervention to clear out conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`) before staging and committing."
+    ],
+    "recommended_videos": [
+      {
+        "video_ref": "V1",
+        "why_watch": "Provides a clear visual walkthrough of how merge and pull operations work alongside conflict handling.",
+        "when_to_watch": "after"
+      },
+      {
+        "video_ref": "V5",
+        "why_watch": "Offers a beginner-friendly breakdown of branch concepts and switching mechanics for extra reinforcement.",
+        "when_to_watch": "before"
+      }
+    ]
+  },
+  "versions": [
+    {
+      "number": 1,
+      "markdown": "# Git Branching and Merging\n\n**Learning objective:** Create and switch between Git branches, merge a feature branch into main, and resolve a simple merge conflict.  \n**Duration:** 43 minutes (budget 45) · **Format:** self-paced or instructor-led  \n**Audience:** Beginner developers and learners who know basic Git commands (like git init, git add, and git commit) and want to learn parallel workflows.  \n**Prerequisites:** Basic familiarity with the command line; Understanding of basic Git tracking, staging, and committing\n\n## What you will be able to do\n\n- You can create a new Git branch and switch between branches using modern and traditional commands.\n- You can merge a separate feature branch back into the main branch.\n- You can identify, manually resolve, and finalize a merge conflict using conflict markers.\n\n## Lesson plan\n\n| # | Section | Type | Minutes |\n|---|---|---|---|\n| 1 | The Parallel Universe Problem | Hook | 3 |\n| 2 | Creating and Switching Git Branches | Concept | 8 |\n| 3 | Merging Branches and Handling Three-Way Merges | Concept | 8 |\n| 4 | Resolving Simple Merge Conflicts | Concept | 7 |\n| 5 | End-to-End Workflow Walkthrough | Worked example | 6 |\n| 6 | Hands-On Conflict Resolution Practice | Activity | 7 |\n| 7 | Knowledge Check | Knowledge check | 2 |\n| 8 | Summary and Next Steps | Summary | 2 |\n| | **Total** | | **43** |\n\n## 1. The Parallel Universe Problem (3 min)\n<!-- kind: hook -->\n\n### Imagine Working on a Shared Book\n\nImagine you and a co-author are writing a book together. If both of you write directly on the exact same master manuscript at the same time, chaos ensues. Words get overwritten, paragraphs clash, and nobody knows which version is correct. In software development, working directly on the primary line of code (`main`) for every new feature or bug fix creates that exact chaos.\n\nGit solves this with **branches**. Instead of modifying your stable project directly, you can spin off into a separate parallel universe—a branch—where you can experiment safely. Once your feature is complete and working, you bring it back together. Let's learn how to manage these parallel worlds without breaking your project [S4, S5].\n\n*Sources: [S4], [S5]*\n\n## 2. Creating and Switching Git Branches (8 min)\n<!-- kind: concept -->\n\n### What is a Git Branch?\n\nA common misconception is that a Git branch is a heavy directory or a physical copy of your project files [S5]. In reality, a **Git branch** is simply a lightweight, movable pointer to a specific commit [S5]. When you create a branch, Git does not duplicate your files; it just places a tiny new sticky note pointing to the current commit history [S1, S5].\n\n### The HEAD Pointer\n\nYour repository always maintains a special reference called **HEAD** [S4]. **HEAD** is a pointer pointing to the current branch or commit you have checked out in your working directory [S4]. When you switch branches, HEAD moves to point to the new branch.\n\n### Commands for Creation and Switching\n\nTo create a branch without switching to it, use:\n```bash\ngit branch <branch-name>\n```\nTo switch to an existing branch, or create and switch in one go, you can use modern commands:\n```bash\ngit switch -c <new-branch-name>\n```\nAlternatively, traditional commands include `git checkout -b <branch-name>` [S1, S3].\n\n### Example\n\nSuppose you have initialized a repository and made your first commit. To create and switch to a feature branch called `iss53`:\n```bash\ngit switch -c iss53\n```\nThis instantly creates the pointer and moves your HEAD to `iss53` [S1, S3].\n\n### Common Mistake\n\n* **Misconception:** Switching branches modifies files without needing a clean working state.\n* **Correct understanding:** Git normally refuses to switch if your uncommitted changes or staging area modifications conflict with the target branch, protecting your work from accidental overwrites [S1, S3].\n\n*Sources: [S1], [S3], [S4], [S5]*\n\n## 3. Merging Branches and Handling Three-Way Merges (8 min)\n<!-- kind: concept -->\n\n### Bringing Work Together\n\nOnce you finish developing a feature on your isolated branch, you need to integrate those changes back into your main line of development (`main`). This process is called **merging** [S4].\n\n### The Three-Way Merge\n\nWhen the histories of your branches have diverged—meaning `main` has moved forward with other commits while your feature branch has also moved forward—Git cannot simply slide a pointer forward (a fast-forward merge). Instead, Git performs a **three-way merge** [S1]. A three-way merge utilizes two branch tips and their closest common ancestor commit to synthesize a new commit containing the combined work [S1].\n\n### Example Workflow\n\nTo merge a feature branch into `main`:\n1. Switch to your destination branch (`main`):\n   ```bash\n   git switch main\n   ```\n2. Run the merge command targeting your feature branch:\n   ```bash\n   git merge iss53\n   ```\nGit will automatically combine non-overlapping changes and create a new merge commit [S1, S4].\n\n*Sources: [S1], [S4]*\n\n## 4. Resolving Simple Merge Conflicts (7 min)\n<!-- kind: concept -->\n\n### What is a Merge Conflict?\n\nA **merge conflict** occurs when two separate branches have modified the exact same part or lines of a file in different ways, and Git cannot automatically determine which version is correct [S1, S4]. \n\n### Conflict Resolution Markers\n\nWhen a conflict happens, Git pauses the merge process, marks the affected file as unmerged, and injects standard **conflict resolution markers** directly into the code [S1, S4]:\n- `<<<<<<< HEAD`: Designates the changes present in your current local branch.\n- `=======`: The dividing line separating your changes from the incoming branch.\n- `>>>>>>> iss53`: Designates the changes coming from the incoming branch being merged.\n\n### The Resolution Steps\n\n1. Open the conflicted file in your text editor.\n2. Locate and edit out the conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`), choosing which code to keep or combining them [S1, S4].\n3. Stage the resolved file using:\n   ```bash\n   git add <filename>\n   ```\n4. Complete the merge by committing:\n   ```bash\n   git commit\n   ```\nIf you ever get stuck during a conflict, you can completely cancel the merge operation using `git merge --abort` [S4].\n\n*Sources: [S1], [S4]*\n\n## 5. End-to-End Workflow Walkthrough (6 min)\n<!-- kind: worked_example -->\n\n### Putting It All Together\n\nLet's walk through a complete end-to-end scenario involving branch creation, parallel edits, a merge conflict, and its resolution.\n\n#### Step 1: Initialize and Create Base File\n```bash\nmkdir git-demo && cd git-demo\ngit init\necho \"initial content\" > merge.txt\ngit add merge.txt\ngit commit -m \"initial commit\"\n```\n\n#### Step 2: Create a Conflict on Main\nWe stay on `main` and modify `merge.txt` [S4]:\n```bash\necho \"content to append on main\" >> merge.txt\ngit commit -am \"appended content to merge.txt on main\"\n```\n\n#### Step 3: Create a Branch and Create a Conflicting Edit\nWe switch to a new branch and edit that exact same line differently [S4]:\n```bash\ngit switch -c feature-branch\necho \"totally different content on feature\" > merge.txt\ngit commit -am \"edited content to cause a conflict\"\n```\n\n#### Step 4: Merge and Encounter Conflict\nWe switch back to `main` and attempt to merge `feature-branch` [S1, S4]:\n```bash\ngit switch main\ngit merge feature-branch\n```\nGit reports an automatic merge failure and marks `merge.txt` as unmerged [S1, S4].\n\n#### Step 5: Resolve and Commit\nOpening `merge.txt` reveals the markers. We edit the file to keep our desired text, save it, stage it, and commit [S1, S4]:\n```bash\ngit add merge.txt\ngit commit -m \"resolved merge conflict\"\n```\nOur repository is now clean and fully updated.\n\n*Sources: [S1], [S4]*\n\n## 6. Hands-On Conflict Resolution Practice (7 min)\n<!-- kind: activity -->\n\n### Practice Exercise\n\nPerform the following steps locally to practice creating branches and resolving conflicts:\n\n1. Create a new directory, run `git init`, create a file called `hello.txt` containing the text `Hello World`, and make your first commit [S1].\n2. Create and switch to a new branch called `update-greeting` [S1, S3].\n3. Modify `hello.txt` to read `Hello Git Branching` and commit the change [S1].\n4. Switch back to `main` [S1]. Verify that `hello.txt` reverts back to `Hello World`.\n5. Modify `hello.txt` on `main` to read `Hello Main Branch` and commit [S1, S4].\n6. Merge `update-greeting` into `main` to trigger a conflict [S1, S4].\n7. Use `git status` to find the conflicted file, open it, remove the conflict markers, stage the file with `git add`, and finish with `git commit` [S1, S4].\n\n**Expected Result:** A successful commit resolving the conflict, with `hello.txt` containing your final edited text.\n\n*Sources: [S1], [S3], [S4]*\n\n## 7. Knowledge Check (2 min)\n<!-- kind: knowledge_check -->\n\nAnswer the following questions to test your understanding of Git branching, merging, and conflict resolution.\n\n**Q1.** What is a Git branch fundamentally?\n\n- A) A heavy directory container that duplicates your project files\n- B) A lightweight, movable pointer to a commit\n- C) A remote server backup of your code history\n- D) An automated testing environment\n\n**Q2.** Which command creates a new branch and switches to it simultaneously?\n\n- A) git branch new-feature\n- B) git switch -c new-feature\n- C) git checkout main new-feature\n- D) git merge new-feature\n\n**Q3.** When does Git perform a three-way merge?\n\n- A) When three different developers are working on the same file\n- B) When development histories have diverged from a common ancestor commit\n- C) Whenever you run git status\n- D) When a merge conflict is successfully resolved and committed\n\n**Q4.** What do the conflict resolution markers like `<<<<<<<` and `>>>>>>>` indicate in a file?\n\n- A) Syntax errors introduced by programming language compilers\n- B) Encrypted security signatures for code verification\n- C) Conflicting blocks of code between your local branch (HEAD) and the incoming branch\n- D) Temporary backup files created automatically by your text editor\n\n**Q5.** You encounter a complex merge conflict and want to completely cancel the merge process and return to safety. What command should you run?\n\n- A) git reset --hard\n- B) git branch -D\n- C) git merge --abort\n- D) git checkout --clean\n\n*Sources: [S1], [S4], [S5]*\n\n## 8. Summary and Next Steps (2 min)\n<!-- kind: summary -->\n\n### Lesson Recap\n\nYou have successfully learned how to create and switch between Git branches, merge independent work streams using three-way merges, and manually resolve merge conflicts using conflict resolution markers [S1, S4, S5]. These skills form the backbone of safe, collaborative software development.\n\n### Next Step\n\nPractice publishing your branches to a remote repository like GitHub using `git push -u origin <branch-name>` to collaborate with other developers in remote environments.\n\n*Sources: [S1], [S4], [S5]*\n\n## Key takeaways\n\n- A Git branch is a lightweight, movable pointer to a specific commit, not a duplicate file container.\n- The HEAD reference points to your currently active branch or commit.\n- Modern commands like `git switch -c` allow you to create and jump into a new branch instantly.\n- Diverged branches require a three-way merge combining branch tips and their common ancestor.\n- Merge conflicts require manual intervention to clear out conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`) before staging and committing.\n\n## Answer key\n\n1. **B**: Git branches are ultra-lightweight pointers to individual commits rather than duplicate directories or physical file containers.\n2. **B**: The `git switch -c <new-branch>` command (along with the older `git checkout -b`) creates a new branch and checks it out immediately.\n3. **B**: A three-way merge is used when branch histories have diverged, utilizing the two branch tips and their common ancestor.\n4. **C**: Git inserts these markers to visibly designate and separate conflicting edits between the local HEAD and the incoming branch.\n5. **C**: The `git merge --abort` command safely stops the merge process and restores your working tree back to its pre-merge state.\n\n## Supplementary videos (optional, outside the 45 minutes)\n\n- **[Never fear merge conflicts again - git merge/pull tutorial](https://www.youtube.com/watch?v=DloR0BOGNU0)** (Philomatics, 5:12). *When:* after. *Why:* Provides a clear visual walkthrough of how merge and pull operations work alongside conflict handling. [V1]\n- **[Git & GitHub Tutorial for Beginners #8 - Branches](https://www.youtube.com/watch?v=QV0kVNvkMxc)** (Net Ninja, 10:07). *When:* before. *Why:* Offers a beginner-friendly breakdown of branch concepts and switching mechanics for extra reinforcement. [V5]\n\n## References\n\n### Websites\n\n- [S1] Git - Basic Branching and Merging. git-scm.com. <https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging>\n- [S2] Git - git-branch Documentation. git-scm.com. <https://git-scm.com/docs/git-branch>\n- [S3] Git - git-switch Documentation. git-scm.com. <https://git-scm.com/docs/git-switch>\n- [S4] How to Resolve Merge Conflicts in Git? | Atlassian Git Tutorial. atlassian.com. <https://www.atlassian.com/git/tutorials/using-branches/merge-conflicts>\n- [S5] How to Create a Branch in Git? | Atlassian Git Tutorial. atlassian.com. <https://www.atlassian.com/git/tutorials/using-branches>\n- [S6] Git - Glossary | MDN. developer.mozilla.org. <https://developer.mozilla.org/en-US/docs/Glossary/Git>\n- [S7] loop: Wasm text instruction - WebAssembly | MDN. developer.mozilla.org. <https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/Control_flow/loop>\n- [S8] block: Wasm text instruction - WebAssembly | MDN. developer.mozilla.org. <https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/Control_flow/block>\n\n### Books\n\n- [B1] *Pro Git*. Scott Chacon, Ben Straub · Springer · 2009. <https://openlibrary.org/works/OL16310859W>\n- [B2] *Git: Pocket Guide*. Richard E. Silverman · O'Reilly Media · 2013. <https://openlibrary.org/works/OL19548227W>\n\n### Videos\n\n- [V1] Never fear merge conflicts again - git merge/pull tutorial. Philomatics, YouTube. <https://www.youtube.com/watch?v=DloR0BOGNU0>\n- [V5] Git & GitHub Tutorial for Beginners #8 - Branches. Net Ninja, YouTube. <https://www.youtube.com/watch?v=QV0kVNvkMxc>\n",
+      "origin": "generated",
+      "note": "Regenerated once after self-check; Self-check problems remaining: Section 'Creating and Switching Git Branches' has only 255 words for 8 minutes; expand it to about 1120 words with more explanation, examples and a short check, or reduce its minutes.; Section 'Merging Branches and Handling Three-Way Merges' has only 155 words for 8 minutes; expand it to about 1120 words with more explanation, examples and a short check, or reduce its minutes.; Section 'Resolving Simple Merge Conflicts' has only 171 words for 7 minutes; expand it to about 980 words with more explanation, examples and a short check, or reduce its minutes.; Section 'End-to-End Workflow Walkthrough' has only 228 words for 6 minutes; expand it to about 840 words with more explanation, examples and a short check, or reduce its minutes.",
+      "created_at": "2026-11-06T17:31:21+00:00"
+    },
+    {
+      "number": 2,
+      "markdown": "# Git Branching and Merging\n\n**Learning objective:** Create and switch between Git branches, merge a feature branch into main, and resolve a simple merge conflict.  \n**Duration:** 43 minutes (budget 45) · **Format:** self-paced or instructor-led  \n**Audience:** Beginner developers and learners who know basic Git commands (like git init, git add, and git commit) and want to learn parallel workflows.\n**Prerequisites:** Basic familiarity with the command line; Understanding of basic Git tracking, staging, and committing\n\n## What you will be able to do\n\n- You can create a new Git branch and switch between branches using modern and traditional commands.\n- You can merge a separate feature branch back into the main branch.\n- You can identify, manually resolve, and finalize a merge conflict using conflict markers.\n\n## Lesson plan\n\n| # | Section | Type | Minutes |\n|---|---|---|---|\n| 1 | The Parallel Universe Problem | Hook | 3 |\n| 2 | Creating and Switching Git Branches | Concept | 8 |\n| 3 | Merging Branches and Handling Three-Way Merges | Concept | 8 |\n| 4 | Resolving Simple Merge Conflicts | Concept | 7 |\n| 5 | End-to-End Workflow Walkthrough | Worked example | 6 |\n| 6 | Hands-On Conflict Resolution Practice | Activity | 7 |\n| 7 | Knowledge Check | Knowledge check | 2 |\n| 8 | Summary and Next Steps | Summary | 2 |\n| | **Total** | | **43** |\n\n## 1. The Parallel Universe Problem (3 min)\n<!-- kind: hook -->\n\n### Imagine Working on a Shared Book\n\nImagine you and a co-author are writing a book together. If both of you write directly on the exact same master manuscript at the same time, chaos ensues. Words get overwritten, paragraphs clash, and nobody knows which version is correct. In software development, working directly on the primary line of code (`main`) for every new feature or bug fix creates that exact chaos.\n\nGit solves this with **branches**. Instead of modifying your stable project directly, you can spin off into a separate parallel universe—a branch—where you can experiment safely. Once your feature is complete and working, you bring it back together. Let's learn how to manage these parallel worlds without breaking your project [S4, S5].\n\n*Sources: [S4], [S5]*\n\n## 2. Creating and Switching Git Branches (8 min)\n<!-- kind: concept -->\n\n### What is a Git Branch?\n\nA common misconception is that a Git branch is a heavy directory or a physical copy of your project files [S5]. In reality, a **Git branch** is simply a lightweight, movable pointer to a specific commit [S5]. When you create a branch, Git does not duplicate your files; it just places a tiny new sticky note pointing to the current commit history [S1, S5].\n\n### The HEAD Pointer\n\nYour repository always maintains a special reference called **HEAD** [S4]. **HEAD** is a pointer pointing to the current branch or commit you have checked out in your working directory [S4]. When you switch branches, HEAD moves to point to the new branch.\n\n### Commit History and HEAD Deep-Dive\n\nTo visualize how Git manages history, imagine a chain of commits represented by their unique SHA-1 hashes (e.g., `a1b2c3d` -> `e4f5g6h`). When you create a new branch pointer using `git branch <branch-name>`, Git creates a file containing the target commit hash without altering the working directory or moving HEAD [S2]. When you switch branches, HEAD updates to point to the new branch reference, and your working directory updates to match the snapshot of the commit pointed to by HEAD [S3]. If you commit new work while on this branch, the branch pointer advances to the new commit, leaving the parent commit behind in the commit graph history [S1].\n\n### Commands for Creation and Switching\n\nTo create a branch without switching to it, use `git branch <branch-name>` [S2].\nTo switch to an existing branch, or create and switch in one go, you can use git switch or `git switch -c <new-branch-name>` [S3].\nAlternatively, traditional commands include `git checkout` [S1].\n\n### Example\n\nSuppose you have initialized a repository and made your first commit. To create and switch to a feature branch called `iss53` [S1, S3]:\n```bash\ngit switch -c iss53\n```\nThis instantly creates the pointer and moves your HEAD to `iss53` [S1, S3].\n\n### Common Mistake\n\n* **Misconception:** Switching branches modifies files without needing a clean working state.\n* **Correct understanding:** Git normally refuses to switch if your uncommitted changes or staging area modifications conflict with the target branch, protecting your work from accidental overwrites [S1, S3].\n\n*Sources: [S1], [S2], [S3], [S4], [S5]*\n\n## 3. Merging Branches and Handling Three-Way Merges (8 min)\n<!-- kind: concept -->\n\n### Bringing Work Together\n\nOnce you finish developing a feature on your isolated branch, you need to integrate those changes back into your main line of development (`main`). This process is called **merging** [S4].\n\n### Fast-Forward vs. Three-Way Merges\n\nWhen you merge two branches, Git chooses one of two strategies depending on their commit history divergence.\n\n#### Fast-Forward Merge\nIf you merge a branch and its history is a direct linear descendant of your current branch (meaning `main` has had no new commits since you branched off), Git performs a **fast-forward** merge [S1]. Instead of creating a new merge commit, Git simply moves the target branch pointer forward to match the tip of the feature branch [S1].\n\nASCII representation of a fast-forward scenario:\n```\nC1 --- C2 (main)\n        \\\n         C3 --- C4 (feature)\n\nAfter fast-forward merge of feature into main:\nC1 --- C2 --- C3 --- C4 (main, feature)\n```\n\n#### Three-Way Merge\nWhen the histories of your branches have diverged—meaning `main` has moved forward with other commits while your feature branch has also moved forward—Git cannot simply slide a pointer forward [S1]. Instead, Git performs a **three-way merge** [S1]. A three-way merge utilizes two branch tips and their closest common ancestor commit to synthesize a new commit containing the combined work [S1].\n\nASCII representation of a three-way merge scenario:\n```\n        C3 --- C4 (feature)\n       /\nC1 --- C2 (main)\n       \\\n        C5 (main divergence)\n\nAfter three-way merge:\n        C3 --- C4 (feature)\n       /         \\\nC1 --- C2         C6 (main, merge commit)\n       \\\\         /\n        C5 ------/\n```\n\n### Example Workflow\n\nTo merge a feature branch into `main` [S1, S4]:\n1. Switch to your destination branch (`main`):\n   ```bash\n   git switch main\n   ```\n2. Run the merge command targeting your feature branch:\n   ```bash\n   git merge iss53\n   ```\nGit will automatically combine non-overlapping changes and create a new merge commit if histories have diverged [S1, S4].\n\n*Sources: [S1], [S4]*\n\n## 4. Resolving Simple Merge Conflicts (7 min)\n<!-- kind: concept -->\n\n### What is a Merge Conflict?\n\nA **merge conflict** occurs when two separate branches have modified the exact same part or lines of a file in different ways, and Git cannot automatically determine which version is correct [S1, S4]. Beyond simple single-file line collisions, conflicts can span multiple files simultaneously across a pull or merge operation if corresponding files were independently modified on both branches.\n\n### Using Diff Tools and Diagnostic Commands\n\nWhen a conflict arises, diagnostic utilities help you understand the state of your workspace [S1, S4]:\n- `git status`: Lists all unmerged files and paths requiring resolution [S1, S4].\n- `git diff`: Displays detailed line-by-line differences between your working tree and staging area, helping isolate what changed in conflicted files.\n\n### Conflict Resolution Markers\n\nWhen a conflict happens, Git pauses the merge process, marks the affected file as unmerged, and injects standard **conflict resolution markers** directly into the code [S1, S4]:\n- `<<<<<<< HEAD`: Designates the changes present in your current local branch.\n- `=======`: The dividing line separating your changes from the incoming branch.\n- `>>>>>>> iss53`: Designates the changes coming from the incoming branch being merged.\n\n### The Resolution Steps\n\n1. Open the conflicted file in your text editor.\n2. Locate and edit out the conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`), choosing which code to keep or combining them [S1, S4].\n3. Stage the resolved file using `git add <filename>` [S1, S4].\n4. Complete the merge by committing: `git commit` [S1, S4].\n\nIf you ever get stuck during a conflict, you can completely cancel the merge operation using `git merge --abort` [S4].\n\n*Sources: [S1], [S4]*\n\n## 5. End-to-End Workflow Walkthrough (6 min)\n<!-- kind: worked_example -->\n\n### Putting It All Together\n\nLet's walk through a complete end-to-end scenario involving branch creation, parallel edits, a merge conflict, and its resolution, noting what happens behind the scenes in Git's object database.\n\n#### Step 1: Initialize and Create Base File\n```bash\nmkdir git-demo && cd git-demo\ngit init\necho \"initial content\" > merge.txt\ngit add merge.txt\ngit commit -m \"initial commit\"\n```\n*Behind the scenes:* Git creates a blob object for `merge.txt`, a tree object capturing directory structure, and a commit object pointing to that tree, storing everything inside the `.git/objects` directory.\n\n#### Step 2: Create a Conflict on Main\nWe stay on `main` and modify `merge.txt` [S4]:\n```bash\necho \"content to append on main\" >> merge.txt\ngit commit -am \"appended content to merge.txt on main\"\n```\n*Behind the scenes:* A new commit object is added to `main`, updating the `refs/heads/main` file to point to the new commit hash.\n\n#### Step 3: Create a Branch and Create a Conflicting Edit\nWe switch to a new branch and edit that exact same line differently [S4]:\n```bash\ngit switch -c feature-branch\necho \"totally different content on feature\" > merge.txt\ngit commit -am \"edited content to cause a conflict\"\n```\n*Behind the scenes:* Git creates a new reference file `refs/heads/feature-branch` pointing to the current commit, then updates HEAD to point to this new reference before recording the new feature commit.\n\n#### Step 4: Merge and Encounter Conflict\nWe switch back to `main` and attempt to merge `feature-branch` [S1, S4]:\n```bash\ngit switch main\ngit merge feature-branch\n```\nGit reports an automatic merge failure, writes MERGE_HEAD and index state files into `.git`, and marks `merge.txt` as unmerged [S1, S4].\n\n#### Step 5: Resolve and Commit\nOpening `merge.txt` reveals the markers. We edit the file to keep our desired text, save it, stage it, and commit [S1, S4]:\n```bash\ngit add merge.txt\ngit commit -m \"resolved merge conflict\"\n```\n*Behind the scenes:* Staging clears the conflict flags in the index, and committing writes a new merge commit object referencing both parent commits into the object database. Our repository is now clean and fully updated.\n\n*Sources: [S1], [S4]*\n\n## 6. Hands-On Conflict Resolution Practice (7 min)\n<!-- kind: activity -->\n\n### Practice Exercise\n\nPerform the following steps locally to practice creating branches and resolving conflicts:\n\n1. Create a new directory, run `git init`, create a file called `hello.txt` containing the text `Hello World`, and make your first commit [S1].\n2. Create and switch to a new branch called `update-greeting` [S1, S3].\n3. Modify `hello.txt` to read `Hello Git Branching` and commit the change [S1].\n4. Switch back to `main` [S1]. Verify that `hello.txt` reverts back to `Hello World`.\n5. Modify `hello.txt` on `main` to read `Hello Main Branch` and commit [S1, S4].\n6. Merge `update-greeting` into `main` to trigger a conflict [S1, S4].\n7. Use `git status` to find the conflicted file, open it, remove the conflict markers, view the file contents (e.g., using cat hello.txt) to verify that the final text is correct, stage the file with `git add`, and finish with `git commit` [S1, S4].\n\n**Expected Result:** A successful commit resolving the conflict, with `hello.txt` containing your final edited text.\n\n*Sources: [S1], [S3], [S4]*\n\n## 7. Knowledge Check (2 min)\n<!-- kind: knowledge_check -->\n\nAnswer the following questions to test your understanding of Git branching, merging, and conflict resolution.\n\n**Q1.** What is a Git branch fundamentally?\n\n- A) A heavy directory container that duplicates your project files\n- B) A lightweight, movable pointer to a commit\n- C) A remote server backup of your code history\n- D) An automated testing environment\n\n**Q2.** Which command creates a new branch and switches to it simultaneously?\n\n- A) git branch new-feature\n- B) git switch -c new-feature\n- C) git checkout main new-feature\n- D) git merge new-feature\n\n**Q3.** When does Git perform a three-way merge?\n\n- A) When three different developers are working on the same file\n- B) When development histories have diverged from a common ancestor commit\n- C) Whenever you run git status\n- D) When a merge conflict is successfully resolved and committed\n\n**Q4.** What do the conflict resolution markers like `<<<<<<<` and `>>>>>>>` indicate in a file?\n\n- A) Syntax errors introduced by programming language compilers\n- B) Encrypted security signatures for code verification\n- C) Conflicting blocks of code between your local branch (HEAD) and the incoming branch\n- D) Temporary backup files created automatically by your text editor\n\n**Q5.** You encounter a complex merge conflict and want to completely cancel the merge process and return to safety. What command should you run?\n\n- A) git reset --hard\n- B) git branch -D\n- C) git merge --abort\n- D) git checkout --clean\n\n*Sources: [S1], [S4], [S5]*\n\n## 8. Summary and Next Steps (2 min)\n<!-- kind: summary -->\n\n### Lesson Recap\n\nYou have successfully learned how to create and switch between Git branches, merge independent work streams using three-way merges, and manually resolve merge conflicts using conflict resolution markers [S1, S4, S5]. These skills form the backbone of safe, collaborative software development.\n\n### Next Step\n\nPractice publishing your branches to a remote repository like GitHub using `git push -u origin <branch-name>` to collaborate with other developers in remote environments.\n\n*Sources: [S1], [S4], [S5]*\n\n## Key takeaways\n\n- A Git branch is a lightweight, movable pointer to a specific commit, not a duplicate file container.\n- The HEAD reference points to your currently active branch or commit.\n- Modern commands like `git switch -c` allow you to create and jump into a new branch instantly.\n- Diverged branches require a three-way merge combining branch tips and their common ancestor.\n- Merge conflicts require manual intervention to clear out conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`) before staging and committing.\n\n## Answer key\n\n1. **B**: Git branches are ultra-lightweight pointers to individual commits rather than duplicate directories or physical file containers.\n2. **B**: The `git switch -c <new-branch>` command (along with the older `git checkout -b`) creates a new branch and checks it out immediately.\n3. **B**: A three-way merge is used when branch histories have diverged, utilizing the two branch tips and their common ancestor.\n4. **C**: Git inserts these markers to visibly designate and separate conflicting edits between the local HEAD and the incoming branch.\n5. **C**: The `git merge --abort` command safely stops the merge process and restores your working tree back to its pre-merge state.\n\n## Supplementary videos (optional, outside the 45 minutes)\n\n- **[Never fear merge conflicts again - git merge/pull tutorial](https://www.youtube.com/watch?v=DloR0BOGNU0)** (Philomatics, 5:12). *When:* after. *Why:* Provides a clear visual walkthrough of how merge and pull operations work alongside conflict handling. [V1]\n- **[Git & GitHub Tutorial for Beginners #8 - Branches](https://www.youtube.com/watch?v=QV0kVNvkMxc)** (Net Ninja, 10:07). *When:* before. *Why:* Offers a beginner-friendly breakdown of branch concepts and switching mechanics for extra reinforcement. [V5]\n\n## References\n\n### Websites\n\n- [S1] Git - Basic Branching and Merging. git-scm.com. <https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging>\n- [S2] Git - git-branch Documentation. git-scm.com. <https://git-scm.com/docs/git-branch>\n- [S3] Git - git-switch Documentation. git-scm.com. <https://git-scm.com/docs/git-switch>\n- [S4] How to Resolve Merge Conflicts in Git? | Atlassian Git Tutorial. atlassian.com. <https://www.atlassian.com/git/tutorials/using-branches/merge-conflicts>\n- [S5] How to Create a Branch in Git? | Atlassian Git Tutorial. atlassian.com. <https://www.atlassian.com/git/tutorials/using-branches>\n- [S6] Git - Glossary | MDN. developer.mozilla.org. <https://developer.mozilla.org/en-US/docs/Glossary/Git>\n- [S7] loop: Wasm text instruction - WebAssembly | MDN. developer.mozilla.org. <https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/Control_flow/loop>\n- [S8] block: Wasm text instruction - WebAssembly | MDN. developer.mozilla.org. <https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/Control_flow/block>\n\n### Books\n\n- [B1] *Pro Git*. Scott Chacon, Ben Straub · Springer · 2009. <https://openlibrary.org/works/OL16310859W>\n- [B2] *Git: Pocket Guide*. Richard E. Silverman · O'Reilly Media · 2013. <https://openlibrary.org/works/OL19548227W>\n\n### Videos\n\n- [V1] Never fear merge conflicts again - git merge/pull tutorial. Philomatics, YouTube. <https://www.youtube.com/watch?v=DloR0BOGNU0>\n- [V5] Git & GitHub Tutorial for Beginners #8 - Branches. Net Ninja, YouTube. <https://www.youtube.com/watch?v=QV0kVNvkMxc>\n",
+      "origin": "applied QC fixes",
+      "note": "QC1-1; QC1-2; QC2-2; QC2-3; QC2-4; QC2-5; QC2-6",
+      "created_at": "2026-11-06T17:32:48+00:00"
+    }
+  ],
+  "qc1": {
+    "summary": "The lesson exhibits high research quality, utilizing official Git documentation and reputable tutorials to support core concepts like branching, merging, and conflict resolution. Claims are generally well-backed by citations, though minor unsupported commands like git merge --abort and git diff appear without explicit source coverage in the provided excerpts. Addressing these minor citation gaps will ensure complete traceability across all diagnostic commands.",
+    "accuracy_score": 88,
+    "claims": [
+      {
+        "claim": "[Creating and Switching Git Branches] A Git branch is simply a lightweight, movable pointer to a specific commit.",
+        "location": "[Creating and Switching Git Branches]",
+        "verdict": "supported",
+        "explanation": "The evidence explicitly confirms that a branch in Git is a lightweight movable pointer to a commit.",
+        "correction": "",
+        "evidence": "[E1] Git - Branches in a Nutshell states that a branch in Git is simply a lightweight movable pointer to one of these commits.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+        ]
+      },
+      {
+        "claim": "[Creating and Switching Git Branches] HEAD is a pointer pointing to the current branch or commit you have checked out in your working directory.",
+        "location": "[Creating and Switching Git Branches]",
+        "verdict": "supported",
+        "explanation": "The evidence verifies that HEAD is a special pointer pointing to the local branch or commit you currently have checked out.",
+        "correction": "",
+        "evidence": "[E4][E18] Git documentation notes that HEAD points to the branch you have checked out.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging",
+          "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+        ]
+      },
+      {
+        "claim": "[Creating and Switching Git Branches] To create a branch without switching to it, use git branch <branch-name>.",
+        "location": "[Creating and Switching Git Branches]",
+        "verdict": "supported",
+        "explanation": "The evidence states that the git branch command creates a new branch without switching to it.",
+        "correction": "",
+        "evidence": "[E17][E18] Git - Branches in a Nutshell states that the git branch command only created a new branch and didn't switch to it.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+        ]
+      },
+      {
+        "claim": "[Creating and Switching Git Branches] To switch to an existing branch, or create and switch in one go, you can use git switch or git switch -c <new-branch-name>.",
+        "location": "[Creating and Switching Git Branches]",
+        "verdict": "supported",
+        "explanation": "The evidence confirms that git switch is used for switching to an existing branch and git switch -c is used to create and switch to a new branch.",
+        "correction": "",
+        "evidence": "[E9] Git - Branches in a Nutshell lists git switch for switching and git switch -c for creating and switching.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+        ]
+      },
+      {
+        "claim": "[Merging Branches and Handling Three-Way Merges] If you merge a branch and its history is a direct linear descendant of your current branch, Git performs a fast-forward merge.",
+        "location": "[Merging Branches and Handling Three-Way Merges]",
+        "verdict": "supported",
+        "explanation": "The evidence states that when a commit can be reached by following the first commit's history (directly ahead), Git performs a fast-forward merge by moving the pointer forward.",
+        "correction": "",
+        "evidence": "[E2] Git - Basic Branching and Merging describes a fast-forward merge when a commit is directly ahead.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging"
+        ]
+      },
+      {
+        "claim": "[Merging Branches and Handling Three-Way Merges] A three-way merge utilizes two branch tips and their closest common ancestor commit to synthesize a new commit containing the combined work.",
+        "location": "[Merging Branches and Handling Three-Way Merges]",
+        "verdict": "supported",
+        "explanation": "The evidence notes that a three-way merge uses the two snapshots pointed to by the branch tips and the common ancestor of the two.",
+        "correction": "",
+        "evidence": "[E12] Git - Basic Branching and Merging explains that Git does a simple three-way merge using the two snapshots pointed to by branch tips and their common ancestor.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging"
+        ]
+      },
+      {
+        "claim": "[Resolving Simple Merge Conflicts] A merge conflict occurs when two separate branches have modified the exact same part or lines of a file in different ways, and Git cannot automatically determine which version is correct.",
+        "location": "[Resolving Simple Merge Conflicts]",
+        "verdict": "supported",
+        "explanation": "The evidence states that changing the same part of the same file differently in two merging branches causes a merge conflict where Git cannot merge them cleanly.",
+        "correction": "",
+        "evidence": "[E13] Git - Basic Branching and Merging notes that changing the same part of the same file differently results in a merge conflict.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging"
+        ]
+      },
+      {
+        "claim": "[Resolving Simple Merge Conflicts] git status lists all unmerged files and paths requiring resolution.",
+        "location": "[Resolving Simple Merge Conflicts]",
+        "verdict": "supported",
+        "explanation": "The evidence shows that git status lists unmerged paths and files that require fixing conflicts and running git commit or git add.",
+        "correction": "",
+        "evidence": "[E14][E16] Git - Basic Branching and Merging demonstrates git status output showing unmerged paths.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging"
+        ]
+      },
+      {
+        "claim": "[Resolving Simple Merge Conflicts] git diff displays detailed line-by-line differences between your working tree and staging area.",
+        "location": "[Resolving Simple Merge Conflicts]",
+        "verdict": "unsupported",
+        "explanation": "The provided text excerpts do not mention git diff or its functionality.",
+        "correction": "git status is shown in the text to list unmerged paths, but git diff is not covered by the evidence.",
+        "evidence": "[E5][E7] The provided evidence does not mention git diff.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging",
+          "https://git-scm.com/docs/git-switch"
+        ]
+      },
+      {
+        "claim": "[Resolving Simple Merge Conflicts] If you ever get stuck during a conflict, you can completely cancel the merge operation using git merge --abort.",
+        "location": "[Resolving Simple Merge Conflicts]",
+        "verdict": "unsupported",
+        "explanation": "The provided evidence excerpts do not mention git merge --abort.",
+        "correction": "The text does not mention git merge --abort for canceling merges.",
+        "evidence": "[E5][E10][E13] The provided evidence does not contain information about git merge --abort.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging",
+          "https://git-scm.com/docs/git-switch"
+        ]
+      },
+      {
+        "claim": "[Answer key] The git switch -c <new-branch> command creates a new branch and checks it out immediately.",
+        "location": "[Answer key]",
+        "verdict": "supported",
+        "explanation": "The evidence explicitly states that git switch -c creates a new branch and switches to it.",
+        "correction": "",
+        "evidence": "[E9] Git - Branches in a Nutshell states: 'Create a new branch and switch to it: git switch -c new-branch'.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+        ]
+      },
+      {
+        "claim": "[Answer key] The git merge --abort command safely stops the merge process and restores your working tree back to its pre-merge state.",
+        "location": "[Answer key]",
+        "verdict": "unsupported",
+        "explanation": "None of the provided evidence excerpts mention git merge --abort.",
+        "correction": "The provided text does not contain references to git merge --abort.",
+        "evidence": "[E5][E7][E12][E19] The evidence does not discuss git merge --abort.",
+        "evidence_urls": [
+          "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging",
+          "https://git-scm.com/docs/git-switch"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "S1",
+        "title": "Git - Basic Branching and Merging",
+        "url": "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "high",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "Official Git documentation (Pro Git book) providing reliable coverage of branching and merging."
+      },
+      {
+        "source_id": "S2",
+        "title": "Git - git-branch Documentation",
+        "url": "https://git-scm.com/docs/git-branch",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "high",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "Official Git reference documentation for git-branch."
+      },
+      {
+        "source_id": "S3",
+        "title": "Git - git-switch Documentation",
+        "url": "https://git-scm.com/docs/git-switch",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "high",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "Official Git reference documentation for git-switch."
+      },
+      {
+        "source_id": "S4",
+        "title": "How to Resolve Merge Conflicts in Git? | Atlassian Git Tutorial",
+        "url": "https://www.atlassian.com/git/tutorials/using-branches/merge-conflicts",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "high",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "Atlassian Git tutorial offering clear guidance on merge conflicts."
+      },
+      {
+        "source_id": "S5",
+        "title": "How to Create a Branch in Git? | Atlassian Git Tutorial",
+        "url": "https://www.atlassian.com/git/tutorials/using-branches",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "high",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "Atlassian Git tutorial explaining branch creation fundamentals."
+      },
+      {
+        "source_id": "S6",
+        "title": "Git - Glossary | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Glossary/Git",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "low",
+        "reachable": true,
+        "cited_in_lesson": false,
+        "note": "MDN Git glossary, valid source but not cited in the lesson."
+      },
+      {
+        "source_id": "S7",
+        "title": "loop: Wasm text instruction - WebAssembly | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/Control_flow/loop",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "low",
+        "reachable": true,
+        "cited_in_lesson": false,
+        "note": "MDN WebAssembly reference, completely irrelevant to Git."
+      },
+      {
+        "source_id": "S8",
+        "title": "block: Wasm text instruction - WebAssembly | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/WebAssembly/Reference/Control_flow/block",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "low",
+        "reachable": true,
+        "cited_in_lesson": false,
+        "note": "MDN WebAssembly reference, completely irrelevant to Git."
+      },
+      {
+        "source_id": "B1",
+        "title": "Pro Git",
+        "url": "https://openlibrary.org/works/OL16310859W",
+        "kind": "book",
+        "reliability": "high",
+        "relevance": "medium",
+        "reachable": true,
+        "cited_in_lesson": false,
+        "note": "Pro Git book text, highly authoritative book source."
+      },
+      {
+        "source_id": "B2",
+        "title": "Git: Pocket Guide",
+        "url": "https://openlibrary.org/works/OL19548227W",
+        "kind": "book",
+        "reliability": "high",
+        "relevance": "medium",
+        "reachable": true,
+        "cited_in_lesson": false,
+        "note": "Git Pocket Guide, authoritative reference book."
+      }
+    ],
+    "issues": [
+      {
+        "id": "QC1-1",
+        "layer": "QC1",
+        "severity": "major",
+        "category": "claim unsupported",
+        "location": "[Resolving Simple Merge Conflicts]",
+        "quote": "[Resolving Simple Merge Conflicts] git diff displays detailed line-by-line differences between your working tree and staging area.",
+        "problem": "The provided text excerpts do not mention git diff or its functionality.",
+        "suggestion": "git status is shown in the text to list unmerged paths, but git diff is not covered by the evidence."
+      },
+      {
+        "id": "QC1-2",
+        "layer": "QC1",
+        "severity": "major",
+        "category": "claim unsupported",
+        "location": "[Resolving Simple Merge Conflicts]",
+        "quote": "[Resolving Simple Merge Conflicts] If you ever get stuck during a conflict, you can completely cancel the merge operation using git merge --abort.",
+        "problem": "The provided evidence excerpts do not mention git merge --abort.",
+        "suggestion": "The text does not mention git merge --abort for canceling merges."
+      },
+      {
+        "id": "QC1-3",
+        "layer": "QC1",
+        "severity": "major",
+        "category": "claim unsupported",
+        "location": "[Answer key]",
+        "quote": "[Answer key] The git merge --abort command safely stops the merge process and restores your working tree back to its pre-merge state.",
+        "problem": "None of the provided evidence excerpts mention git merge --abort.",
+        "suggestion": "The provided text does not contain references to git merge --abort."
+      },
+      {
+        "id": "QC1-4",
+        "layer": "QC1",
+        "severity": "minor",
+        "category": "unsupported claim",
+        "location": "4. Resolving Simple Merge Conflicts",
+        "quote": "git diff: Displays detailed line-by-line differences between your working tree and staging area, helping isolate what changed in conflicted files.",
+        "problem": "The text discusses git diff in the context of merge conflicts, but the independent evidence notes that git diff and git merge --abort lack direct citation coverage from the primary S1-S5 sources.",
+        "suggestion": "Add explicit citations or ensure git diff explanation focuses on standard conflict-state usage supported by existing sources."
+      }
+    ],
+    "verification_queries": [
+      "git branch pointer commit documentation",
+      "git switch command documentation",
+      "git merge fast forward three way",
+      "git merge abort documentation"
+    ],
+    "verification_sources": [
+      {
+        "title": "Git - Branches in a Nutshell",
+        "url": "https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell"
+      },
+      {
+        "title": "Git - git-switch Documentation",
+        "url": "https://git-scm.com/docs/git-switch"
+      },
+      {
+        "title": "Git - Basic Branching and Merging",
+        "url": "https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging"
+      },
+      {
+        "title": "Git - Glossary | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Glossary/Git"
+      },
+      {
+        "title": "Data Version Control (software) - Wikipedia",
+        "url": "https://en.wikipedia.org/wiki/Data_Version_Control_(software)"
+      }
+    ],
+    "verification_method": "web-retrieval",
+    "lesson_version": 2,
+    "model": "gemini-3.5-flash",
+    "created_at": "2026-11-06T17:33:06+00:00"
+  },
+  "qc2": {
+    "summary": "This lesson provides a solid introduction to Git branching, merging, and conflict resolution with clear explanations and a hands-on activity. However, several core sections suffer from severe time-allocation padding where the designated minutes vastly exceed the actual reading content. Addressing these pacing discrepancies and expanding the conceptual sections will ensure a balanced and robust learning experience.",
+    "overall_score": 87,
+    "objective_coverage": [
+      {
+        "component": "Create and switch between Git branches",
+        "coverage": "full",
+        "evidence": "Section 2 provides detailed conceptual explanations and commands (git switch -c) for branch creation and switching, reinforced by the practice exercise in Section 6.",
+        "gap": ""
+      },
+      {
+        "component": "Merge a feature branch into main",
+        "coverage": "full",
+        "evidence": "Section 3 explains fast-forward and three-way merges with ASCII diagrams and step-by-step instructions, and Section 5 demonstrates the merge workflow.",
+        "gap": ""
+      },
+      {
+        "component": "Resolve a simple merge conflict",
+        "coverage": "full",
+        "evidence": "Section 4 covers conflict markers and resolution steps, Section 5 walks through an end-to-end conflict scenario, and Section 6 gives learners hands-on practice.",
+        "gap": ""
+      }
+    ],
+    "rubric": [
+      {
+        "criterion": "Objective alignment",
+        "score": 5,
+        "rationale": "Every component of the learning objective is thoroughly addressed through dedicated conceptual explanations, worked examples, and practical activities."
+      },
+      {
+        "criterion": "Clarity",
+        "score": 4,
+        "rationale": "The technical explanations of Git internals and pointers are generally clear, though some sections feel overly sparse for the allocated time."
+      },
+      {
+        "criterion": "Structure and flow",
+        "score": 5,
+        "rationale": "The lesson follows a logical sequence from hook to concepts, worked examples, hands-on practice, and knowledge checks."
+      },
+      {
+        "criterion": "Relevance and engagement",
+        "score": 4,
+        "rationale": "The introductory book-writing analogy creates a strong relatable hook, and the command-line examples are highly practical for developers."
+      },
+      {
+        "criterion": "Examples and practical application",
+        "score": 5,
+        "rationale": "The walkthrough in Section 5 and the hands-on exercise in Section 6 give concrete opportunities to apply and test the commands."
+      },
+      {
+        "criterion": "Assessment quality",
+        "score": 5,
+        "rationale": "The knowledge check features five well-crafted multiple-choice questions that directly align with the core concepts taught in the lesson."
+      },
+      {
+        "criterion": "Timing feasibility",
+        "score": 2,
+        "rationale": "Sections 2, 3, and 4 suffer from severe timing inflation, declaring 8 or 7 minutes of time while containing only 1.5 to 2.2 minutes of readable text."
+      }
+    ],
+    "timing": {
+      "budget_minutes": 45,
+      "declared_minutes": 43,
+      "estimated_reading_minutes": 11.2,
+      "estimated_total_minutes": 43.0,
+      "within_budget": true,
+      "per_section": [
+        {
+          "section": "1. The Parallel Universe Problem",
+          "kind": "hook",
+          "declared_min": 3.0,
+          "words": 128,
+          "reading_min": 0.8,
+          "estimated_min": 3.0,
+          "over": false,
+          "padded": false
+        },
+        {
+          "section": "2. Creating and Switching Git Branches",
+          "kind": "concept",
+          "declared_min": 8.0,
+          "words": 371,
+          "reading_min": 2.2,
+          "estimated_min": 8.0,
+          "over": false,
+          "padded": true
+        },
+        {
+          "section": "3. Merging Branches and Handling Three-Way Merges",
+          "kind": "concept",
+          "declared_min": 8.0,
+          "words": 300,
+          "reading_min": 1.8,
+          "estimated_min": 8.0,
+          "over": false,
+          "padded": true
+        },
+        {
+          "section": "4. Resolving Simple Merge Conflicts",
+          "kind": "concept",
+          "declared_min": 7.0,
+          "words": 256,
+          "reading_min": 1.5,
+          "estimated_min": 7.0,
+          "over": false,
+          "padded": true
+        },
+        {
+          "section": "5. End-to-End Workflow Walkthrough",
+          "kind": "worked_example",
+          "declared_min": 6.0,
+          "words": 363,
+          "reading_min": 2.1,
+          "estimated_min": 6.0,
+          "over": false,
+          "padded": false
+        },
+        {
+          "section": "6. Hands-On Conflict Resolution Practice",
+          "kind": "activity",
+          "declared_min": 7.0,
+          "words": 174,
+          "reading_min": 1.0,
+          "estimated_min": 7.0,
+          "over": false,
+          "padded": false
+        },
+        {
+          "section": "7. Knowledge Check",
+          "kind": "knowledge_check",
+          "declared_min": 2.0,
+          "words": 231,
+          "reading_min": 1.4,
+          "estimated_min": 2.0,
+          "over": false,
+          "padded": false
+        },
+        {
+          "section": "8. Summary and Next Steps",
+          "kind": "summary",
+          "declared_min": 2.0,
+          "words": 75,
+          "reading_min": 0.4,
+          "estimated_min": 2.0,
+          "over": false,
+          "padded": false
+        }
+      ],
+      "note": "Fits the 45-min budget on paper, but these sections have far less text than their minutes suggest (thin content or padded timing): 2. Creating and Switching Git Branches; 3. Merging Branches and Handling Three-Way Merges; 4. Resolving Simple Merge Conflicts."
+    },
+    "structure_checks": [
+      {
+        "check": "Opens with a hook",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Has concept explanation sections",
+        "passed": true,
+        "detail": "3 found"
+      },
+      {
+        "check": "Has a worked example",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Has a hands-on activity",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Has a knowledge check with >= 4 questions",
+        "passed": true,
+        "detail": "5 questions"
+      },
+      {
+        "check": "Ends with a summary",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Fits the time budget",
+        "passed": true,
+        "detail": "Fits the 45-min budget on paper, but these sections have far less text than their minutes suggest (thin content or padded timing): 2. Creating and Switching Git Branches; 3. Merging Branches and Handling Three-Way Merges; 4. Resolving Simple Merge Conflicts."
+      },
+      {
+        "check": "No truncated sections",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Section times match their content",
+        "passed": false,
+        "detail": "2. Creating and Switching Git Branches: 8 min for ~2.2 min of text; 3. Merging Branches and Handling Three-Way Merges: 8 min for ~1.8 min of text; 4. Resolving Simple Merge Conflicts: 7 min for ~1.5 min of text"
+      },
+      {
+        "check": "Concept/example sections cite sources",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Includes supplementary YouTube videos",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Includes a reference list",
+        "passed": true,
+        "detail": ""
+      }
+    ],
+    "issues": [
+      {
+        "id": "QC2-1",
+        "layer": "QC2",
+        "severity": "major",
+        "category": "structure check",
+        "location": "Whole lesson",
+        "quote": "",
+        "problem": "Automatic check failed: Section times match their content. 2. Creating and Switching Git Branches: 8 min for ~2.2 min of text; 3. Merging Branches and Handling Three-Way Merges: 8 min for ~1.8 min of text; 4. Resolving Simple Merge Conflicts: 7 min for ~1.5 min of text",
+        "suggestion": "Adjust section minutes so they add up to the budget."
+      },
+      {
+        "id": "QC2-2",
+        "layer": "QC2",
+        "severity": "major",
+        "category": "Timing feasibility",
+        "location": "2. Creating and Switching Git Branches",
+        "quote": "Creating and Switching Git Branches (8 min)",
+        "problem": "The allocated time of 8 minutes is heavily padded for only ~2.2 minutes of reading text, leading to potential learner pacing issues.",
+        "suggestion": "Either reduce the section time to 3 minutes or expand the text with deeper explanations of commit hashes and interactive terminal check-ins."
+      },
+      {
+        "id": "QC2-3",
+        "layer": "QC2",
+        "severity": "major",
+        "category": "Timing feasibility",
+        "location": "3. Merging Branches and Handling Three-Way Merges",
+        "quote": "Merging Branches and Handling Three-Way Merges (8 min)",
+        "problem": "An 8-minute time allocation for approximately 1.8 minutes of reading text leaves a significant pacing gap.",
+        "suggestion": "Adjust the time allocation downward to match the content length or add guided practice prompts within the section."
+      },
+      {
+        "id": "QC2-4",
+        "layer": "QC2",
+        "severity": "major",
+        "category": "Timing feasibility",
+        "location": "4. Resolving Simple Merge Conflicts",
+        "quote": "Resolving Simple Merge Conflicts (7 min)",
+        "problem": "The declared 7-minute duration contains only about 1.5 minutes of text, creating an imbalance between expected time and actual reading content.",
+        "suggestion": "Scale down the timer for this section to 3 minutes or add more detailed troubleshooting instructions for complex conflict scenarios."
+      }
+    ],
+    "lesson_version": 2,
+    "model": "gemini-3.5-flash",
+    "created_at": "2026-11-06T17:32:53+00:00"
+  },
+  "applied_issue_ids": [
+    "QC1-1",
+    "QC1-2",
+    "QC2-2",
+    "QC2-3",
+    "QC2-4",
+    "QC2-5",
+    "QC2-6"
+  ],
+  "dismissed_issue_ids": []
+}

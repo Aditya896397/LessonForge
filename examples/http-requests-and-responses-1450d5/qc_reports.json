@@ -1,0 +1,595 @@
+{
+  "qc1": {
+    "summary": "The lesson relies on highly authoritative standards and MDN documentation to explain GET and POST methods and status code categories. The main area for improvement is addressing the coverage gap in the 5xx status category by providing concrete status code examples (e.g., 500, 503) alongside 2xx and 4xx codes, and refocusing header rules toward the primary learning objectives.",
+    "accuracy_score": 88,
+    "claims": [
+      {
+        "claim": "HTTP (Hypertext Transfer Protocol) is an application-layer protocol sent over TCP or TLS-encrypted TCP connections to exchange request and response messages.",
+        "location": "1. What Happens When You Click a Link?",
+        "verdict": "supported",
+        "explanation": "The evidence confirms that HTTP is an application-layer protocol sent over TCP or TLS-encrypted TCP connections to exchange request/response messages.",
+        "correction": "",
+        "evidence": "[E7] MDN states HTTP is an application layer protocol sent over TCP or TLS-encrypted TCP connection to exchange request/response pairs.",
+        "evidence_urls": [
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview"
+        ]
+      },
+      {
+        "claim": "The GET method requests a representation of a specified resource without altering server state.",
+        "location": "2. HTTP Request Methods: GET vs. POST",
+        "verdict": "supported",
+        "explanation": "The GET method requests a representation of a resource and is classified as a safe method that does not alter server state.",
+        "correction": "",
+        "evidence": "[E4][E8] MDN states GET requests a representation of the specified resource and is a safe method that does not alter the state of the server.",
+        "evidence_urls": [
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/GET",
+          "https://developer.mozilla.org/en-US/docs/Glossary/Safe/HTTP"
+        ]
+      },
+      {
+        "claim": "GET requests should only retrieve data and must not contain a request body.",
+        "location": "2. HTTP Request Methods: GET vs. POST",
+        "verdict": "partially_supported",
+        "explanation": "While GET requests should only retrieve data and shouldn't contain a request body, claiming they 'must not' contain one is imprecise because the spec defines GET body semantics as undefined rather than strictly forbidden.",
+        "correction": "GET requests should only be used to request data and shouldn't contain a request body, though its semantics are undefined.",
+        "evidence": "[E4] MDN specifies GET requests should only be used to request data and shouldn't contain a body, noting that the semantics of sending a body in GET requests are undefined.",
+        "evidence_urls": [
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/GET"
+        ]
+      },
+      {
+        "claim": "HTML forms using POST encode content using either application/x-www-form-urlencoded or multipart/form-data.",
+        "location": "2. HTTP Request Methods: GET vs. POST",
+        "verdict": "supported",
+        "explanation": "The evidence explicitly lists application/x-www-form-urlencoded and multipart/form-data as the body content encodings for HTML forms using POST.",
+        "correction": "",
+        "evidence": "[E3] MDN states that for HTML forms using POST, the body encoding may be application/x-www-form-urlencoded or multipart/form-data.",
+        "evidence_urls": [
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST"
+        ]
+      },
+      {
+        "claim": "POST is neither safe nor idempotent.",
+        "location": "2. HTTP Request Methods: GET vs. POST",
+        "verdict": "supported",
+        "explanation": "The evidence identifies POST as an unsafe method and distinguishes it from idempotent unsafe methods like PUT and DELETE.",
+        "correction": "",
+        "evidence": "[E6][E8] MDN and RFC 9110 state POST is unsafe, while PUT and DELETE are categorized as idempotent but unsafe methods, confirming POST is neither safe nor idempotent.",
+        "evidence_urls": [
+          "https://datatracker.ietf.org/doc/html/rfc9110",
+          "https://developer.mozilla.org/en-US/docs/Glossary/Safe/HTTP"
+        ]
+      },
+      {
+        "claim": "A POST response can be cached to satisfy subsequent GET or HEAD requests if it includes explicit freshness information and a Content-Location header matching the target URI.",
+        "location": "2. HTTP Request Methods: GET vs. POST",
+        "verdict": "supported",
+        "explanation": "The RFC specification confirms that a cached POST response containing explicit freshness information and a Content-Location matching the POST target URI can satisfy subsequent GET or HEAD requests.",
+        "correction": "",
+        "evidence": "[E6] RFC 9110 states that POST responses are cacheable when they include explicit freshness information and a Content-Location header field matching the POST target URI, and can be reused to satisfy later GET or HEAD requests.",
+        "evidence_urls": [
+          "https://datatracker.ietf.org/doc/html/rfc9110"
+        ]
+      },
+      {
+        "claim": "Status code 201 Created indicates that the request succeeded and a new resource was created as a result, typically sent after POST or PUT operations.",
+        "location": "3. HTTP Response Status Categories: 2xx, 4xx, and 5xx",
+        "verdict": "supported",
+        "explanation": "The evidence confirms 201 Created indicates successful resource creation and is commonly returned after POST or PUT requests.",
+        "correction": "",
+        "evidence": "[E2][E6][E9] MDN and RFC 7231 state 201 Created indicates that a request led to the creation of a resource, commonly sent as the result of POST or PUT requests.",
+        "evidence_urls": [
+          "https://datatracker.ietf.org/doc/html/rfc7231",
+          "https://datatracker.ietf.org/doc/html/rfc9110",
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/201"
+        ]
+      },
+      {
+        "claim": "Status code 401 Unauthorized semantically means 'unauthenticated'.",
+        "location": "3. HTTP Response Status Categories: 2xx, 4xx, and 5xx",
+        "verdict": "supported",
+        "explanation": "The evidence shows 401 Unauthorized is returned specifically when a request lacks valid authentication credentials.",
+        "correction": "",
+        "evidence": "[E5] MDN states 401 Unauthorized indicates a request was not successful because it lacks valid authentication credentials, contrasting with 403 Forbidden where credentials are valid.",
+        "evidence_urls": [
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/401"
+        ]
+      },
+      {
+        "claim": "Status code 410 Gone is sent when the requested content has been permanently deleted from the server with no forwarding address.",
+        "location": "3. HTTP Response Status Categories: 2xx, 4xx, and 5xx",
+        "verdict": "supported",
+        "explanation": "The evidence confirms that 410 Gone indicates the target resource is no longer available at the origin server and that this condition is likely permanent.",
+        "correction": "",
+        "evidence": "[E10] MDN states 410 Gone indicates that the target resource is no longer available at the origin server and that this condition is likely to be permanent.",
+        "evidence_urls": [
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/410"
+        ]
+      },
+      {
+        "claim": "Origin servers with a clock MUST generate a Date header field in all 2xx, 3xx, and 4xx responses.",
+        "location": "3. HTTP Response Status Categories: 2xx, 4xx, and 5xx",
+        "verdict": "unsupported",
+        "explanation": "The provided evidence contains example HTTP responses with Date headers but does not state the specification rules requiring origin servers to generate a Date header field.",
+        "correction": "",
+        "evidence": "[E1][E2][E4][E5][E6] The provided evidence does not mention normative requirements regarding when origin servers MUST generate a Date header field.",
+        "evidence_urls": [
+          "https://datatracker.ietf.org/doc/html/rfc7230",
+          "https://datatracker.ietf.org/doc/html/rfc7231",
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/GET",
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/401"
+        ]
+      },
+      {
+        "claim": "Origin servers MAY generate a Date header in 1xx and 5xx responses.",
+        "location": "3. HTTP Response Status Categories: 2xx, 4xx, and 5xx",
+        "verdict": "unsupported",
+        "explanation": "The provided evidence does not state rules regarding whether origin servers MAY generate a Date header in 1xx and 5xx responses.",
+        "correction": "",
+        "evidence": "[E1][E2][E4][E5][E6] The provided evidence does not address the optional generation of Date headers by origin servers in 1xx or 5xx responses.",
+        "evidence_urls": [
+          "https://datatracker.ietf.org/doc/html/rfc7230",
+          "https://datatracker.ietf.org/doc/html/rfc7231",
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/GET",
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/401"
+        ]
+      },
+      {
+        "claim": "When communicating with an origin server in HTTP/1.1, GET uses an absolute path, whereas requests routed through proxies use an absolute URL.",
+        "location": "2. HTTP Request Methods: GET vs. POST",
+        "verdict": "supported",
+        "explanation": "The evidence specifies that the request target is an absolute path when making requests to an origin server and an absolute URL in requests to proxies.",
+        "correction": "",
+        "evidence": "[E3][E4] MDN states that the request target is an absolute path in requests to an origin server and an absolute URL in requests to proxies.",
+        "evidence_urls": [
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST",
+          "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/GET"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "S1",
+        "title": "HTTP response status codes - HTTP | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "high",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "Official MDN documentation on HTTP response status codes; highly authoritative and directly relevant to the core objective."
+      },
+      {
+        "source_id": "S2",
+        "title": "HTTP request methods - HTTP | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "high",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "Official MDN documentation covering HTTP request methods including GET and POST."
+      },
+      {
+        "source_id": "S3",
+        "title": "GET request method - HTTP | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/GET",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "high",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "Official MDN documentation detailing GET request characteristics, safety, and idempotency."
+      },
+      {
+        "source_id": "S4",
+        "title": "POST request method - HTTP | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "high",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "Official MDN documentation detailing POST request behavior, encodings, and semantics."
+      },
+      {
+        "source_id": "S5",
+        "title": "Overview of HTTP - HTTP | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "high",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "Official MDN documentation providing an architectural overview of HTTP protocol messages."
+      },
+      {
+        "source_id": "S6",
+        "title": "RFC 9110: HTTP Semantics",
+        "url": "https://www.rfc-editor.org/rfc/rfc9110.html#name-status-codes",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "high",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "IETF RFC 9110 official specification; the definitive standard for HTTP semantics and status codes."
+      },
+      {
+        "source_id": "S7",
+        "title": "HTTP headers - HTTP | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers",
+        "kind": "web",
+        "reliability": "high",
+        "relevance": "low",
+        "reachable": true,
+        "cited_in_lesson": false,
+        "note": "Official MDN documentation on HTTP headers; included in sources list but uncited in the lesson."
+      },
+      {
+        "source_id": "S8",
+        "title": "QUERY request method - HTTP | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/QUERY",
+        "kind": "web",
+        "reliability": "medium",
+        "relevance": "medium",
+        "reachable": true,
+        "cited_in_lesson": true,
+        "note": "MDN documentation on the experimental QUERY method; relevant context for modern GET payload alternatives."
+      },
+      {
+        "source_id": "B1",
+        "title": "HTTP: The Definitive Guide",
+        "url": "https://openlibrary.org/works/OL16026044W",
+        "kind": "book",
+        "reliability": "high",
+        "relevance": "low",
+        "reachable": true,
+        "cited_in_lesson": false,
+        "note": "Verified reference book on HTTP protocol fundamentals; listed in sources but not cited in the text."
+      },
+      {
+        "source_id": "B2",
+        "title": "RESTful Web APIs: Services for a Changing World",
+        "url": "https://openlibrary.org/works/OL19548004W",
+        "kind": "book",
+        "reliability": "high",
+        "relevance": "low",
+        "reachable": true,
+        "cited_in_lesson": false,
+        "note": "Verified reference book on RESTful API design; listed in sources but not cited in the text."
+      },
+      {
+        "source_id": "B3",
+        "title": "Learning HTTP/2",
+        "url": "https://openlibrary.org/works/OL20055086W",
+        "kind": "book",
+        "reliability": "high",
+        "relevance": "low",
+        "reachable": true,
+        "cited_in_lesson": false,
+        "note": "Verified reference book on HTTP/2; listed in sources but not cited in the text."
+      }
+    ],
+    "issues": [
+      {
+        "id": "QC1-1",
+        "layer": "QC1",
+        "severity": "minor",
+        "category": "claim partially supported",
+        "location": "2. HTTP Request Methods: GET vs. POST",
+        "quote": "GET requests should only retrieve data and must not contain a request body.",
+        "problem": "While GET requests should only retrieve data and shouldn't contain a request body, claiming they 'must not' contain one is imprecise because the spec defines GET body semantics as undefined rather than strictly forbidden.",
+        "suggestion": "GET requests should only be used to request data and shouldn't contain a request body, though its semantics are undefined."
+      },
+      {
+        "id": "QC1-2",
+        "layer": "QC1",
+        "severity": "major",
+        "category": "claim unsupported",
+        "location": "3. HTTP Response Status Categories: 2xx, 4xx, and 5xx",
+        "quote": "Origin servers with a clock MUST generate a Date header field in all 2xx, 3xx, and 4xx responses.",
+        "problem": "The provided evidence contains example HTTP responses with Date headers but does not state the specification rules requiring origin servers to generate a Date header field.",
+        "suggestion": "Add an authoritative citation or remove the claim."
+      },
+      {
+        "id": "QC1-3",
+        "layer": "QC1",
+        "severity": "major",
+        "category": "claim unsupported",
+        "location": "3. HTTP Response Status Categories: 2xx, 4xx, and 5xx",
+        "quote": "Origin servers MAY generate a Date header in 1xx and 5xx responses.",
+        "problem": "The provided evidence does not state rules regarding whether origin servers MAY generate a Date header in 1xx and 5xx responses.",
+        "suggestion": "Add an authoritative citation or remove the claim."
+      },
+      {
+        "id": "QC1-4",
+        "layer": "QC1",
+        "severity": "major",
+        "category": "coverage_gap",
+        "location": "3. HTTP Response Status Categories: 2xx, 4xx, and 5xx",
+        "quote": "The 5xx (Server Error) status category indicates that the server encountered an internal failure or error condition that prevented it from fulfilling a valid request [S6]. The error lies entirely on the server side [S6].",
+        "problem": "Although the stated learning objective requires students to distinguish between 2xx, 4xx, and 5xx response categories, the text provides specific code examples for 2xx (200, 201) and 4xx (401, 410) but omits any concrete 5xx status code examples (such as 500 Internal Server Error or 503 Service Unavailable) in Section 3 and Section 4.",
+        "suggestion": "Include concrete 5xx code definitions (e.g., 500 Internal Server Error, 503 Service Unavailable) in Section 3 and add a corresponding 5xx response cycle in Section 4's worked examples."
+      },
+      {
+        "id": "QC1-5",
+        "layer": "QC1",
+        "severity": "minor",
+        "category": "out_of_scope_content",
+        "location": "3. HTTP Response Status Categories: 2xx, 4xx, and 5xx",
+        "quote": "Header Rules: The Date Header: Origin servers with a clock MUST generate a Date header field in all 2xx, 3xx, and 4xx responses [S6].",
+        "problem": "The lesson introduces granular Date header requirement rules across response status classes and assesses them in Q4, which distracts from the primary objective of understanding GET/POST methods and 2xx/4xx/5xx status code categories.",
+        "suggestion": "Replace the Date header requirement rules and Knowledge Check Q4 with content and questions that reinforce distinguishing between 2xx, 4xx, and 5xx status code categories."
+      }
+    ],
+    "verification_queries": [
+      "HTTP request methods GET POST",
+      "HTTP response status codes 201 401 410",
+      "HTTP Date header origin server MUST MAY",
+      "HTTP POST response caching Content-Location",
+      "HTTP request line absolute path origin server proxy"
+    ],
+    "verification_sources": [
+      {
+        "title": "RFC 7230 - Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing",
+        "url": "https://datatracker.ietf.org/doc/html/rfc7230"
+      },
+      {
+        "title": "RFC 7231 - Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content",
+        "url": "https://datatracker.ietf.org/doc/html/rfc7231"
+      },
+      {
+        "title": "POST request method - HTTP | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST"
+      },
+      {
+        "title": "GET request method - HTTP | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/GET"
+      },
+      {
+        "title": "401 Unauthorized - HTTP | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/401"
+      },
+      {
+        "title": "RFC 9110 - HTTP Semantics",
+        "url": "https://datatracker.ietf.org/doc/html/rfc9110"
+      },
+      {
+        "title": "Overview of HTTP - HTTP | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview"
+      },
+      {
+        "title": "Safe (HTTP Methods) - Glossary | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Glossary/Safe/HTTP"
+      },
+      {
+        "title": "201 Created - HTTP | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/201"
+      },
+      {
+        "title": "410 Gone - HTTP | MDN",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/410"
+      }
+    ],
+    "verification_method": "web-retrieval",
+    "lesson_version": 1,
+    "model": "gemini-3.5-flash",
+    "created_at": "2026-11-06T17:17:41+00:00"
+  },
+  "qc2": {
+    "summary": "This lesson is well-structured, clearly written, and highly aligned with its learning objective. It effectively combines conceptual explanations, code-level worked examples, and a scenario-based practice matrix. To make it even stronger, the lesson should include explicit examples of 5xx status codes (e.g., 500 Internal Server Error) in the walkthrough and replace an overly detailed quiz question on HTTP Date header specifications with one aligned to distinguishing response categories.",
+    "overall_score": 90,
+    "objective_coverage": [
+      {
+        "component": "Explain GET and POST methods",
+        "coverage": "full",
+        "evidence": "Section 2 provides detailed coverage of GET and POST (purpose, body, safety, idempotency, cacheability) with a comparison table and analogy. Section 4 shows raw HTTP request/response cycles for both methods, and Section 5 and 6 test learner understanding.",
+        "gap": ""
+      },
+      {
+        "component": "Distinguish between 2xx, 4xx, and 5xx response status categories",
+        "coverage": "full",
+        "evidence": "Section 3 defines 2xx, 4xx, and 5xx categories with standard examples (200, 201, 401, 410) and a summary table. Section 4 provides worked examples across 2xx and 4xx, and Section 5 requires learners to select correct status categories for scenarios.",
+        "gap": ""
+      }
+    ],
+    "rubric": [
+      {
+        "criterion": "Objective alignment",
+        "score": 5,
+        "rationale": "Every section, walkthrough example, and activity directly targets explaining GET/POST and categorizing 2xx, 4xx, and 5xx HTTP responses."
+      },
+      {
+        "criterion": "Clarity",
+        "score": 4,
+        "rationale": "Concepts like safety and idempotency are clearly defined using accessible analogies like the public bulletin board versus drop box."
+      },
+      {
+        "criterion": "Structure and flow",
+        "score": 5,
+        "rationale": "The progression moves logically from an intuitive hook to concepts, concrete HTTP message walkthroughs, active scenario practice, assessment, and wrap-up."
+      },
+      {
+        "criterion": "Relevance and engagement",
+        "score": 4,
+        "rationale": "Real-world web interactions (online shopping, form submission, missing authentication) ground abstract HTTP protocol rules in practical developer contexts."
+      },
+      {
+        "criterion": "Examples and practical application",
+        "score": 4,
+        "rationale": "Walkthroughs show complete, realistic HTTP request and response message headers and bodies, though a 5xx server error example is missing from the walkthrough."
+      },
+      {
+        "criterion": "Assessment quality",
+        "score": 4,
+        "rationale": "The knowledge check features strong situational multiple-choice items, though one question focuses on obscure RFC Date header rules rather than core objective concepts."
+      },
+      {
+        "criterion": "Timing feasibility",
+        "score": 5,
+        "rationale": "The 45-minute breakdown gives generous room for reading, inspecting HTTP code blocks, and working through the decision matrix activity."
+      }
+    ],
+    "timing": {
+      "budget_minutes": 45,
+      "declared_minutes": 45,
+      "estimated_reading_minutes": 16.0,
+      "estimated_total_minutes": 45.0,
+      "within_budget": true,
+      "per_section": [
+        {
+          "section": "1. What Happens When You Click a Link?",
+          "kind": "hook",
+          "declared_min": 3.0,
+          "words": 168,
+          "reading_min": 1.0,
+          "estimated_min": 3.0,
+          "over": false
+        },
+        {
+          "section": "2. HTTP Request Methods: GET vs. POST",
+          "kind": "concept",
+          "declared_min": 10.0,
+          "words": 589,
+          "reading_min": 3.5,
+          "estimated_min": 10.0,
+          "over": false
+        },
+        {
+          "section": "3. HTTP Response Status Categories: 2xx, 4xx, and 5xx",
+          "kind": "concept",
+          "declared_min": 10.0,
+          "words": 425,
+          "reading_min": 2.5,
+          "estimated_min": 10.0,
+          "over": false
+        },
+        {
+          "section": "4. Walkthrough: Request and Response Cycles in Action",
+          "kind": "worked_example",
+          "declared_min": 8.0,
+          "words": 504,
+          "reading_min": 3.0,
+          "estimated_min": 8.0,
+          "over": false
+        },
+        {
+          "section": "5. Hands-on Decision Matrix & Scenario Analysis",
+          "kind": "activity",
+          "declared_min": 8.0,
+          "words": 336,
+          "reading_min": 2.0,
+          "estimated_min": 8.0,
+          "over": false
+        },
+        {
+          "section": "6. Test Your Understanding",
+          "kind": "knowledge_check",
+          "declared_min": 4.0,
+          "words": 513,
+          "reading_min": 3.0,
+          "estimated_min": 4.0,
+          "over": false
+        },
+        {
+          "section": "7. Lesson Wrap-Up and Next Steps",
+          "kind": "summary",
+          "declared_min": 2.0,
+          "words": 191,
+          "reading_min": 1.1,
+          "estimated_min": 2.0,
+          "over": false
+        }
+      ],
+      "note": "Fits the budget: 45 min declared, about 45 min estimated."
+    },
+    "structure_checks": [
+      {
+        "check": "Opens with a hook",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Has concept explanation sections",
+        "passed": true,
+        "detail": "2 found"
+      },
+      {
+        "check": "Has a worked example",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Has a hands-on activity",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Has a knowledge check with >= 4 questions",
+        "passed": true,
+        "detail": "6 questions"
+      },
+      {
+        "check": "Ends with a summary",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Fits the time budget",
+        "passed": true,
+        "detail": "Fits the budget: 45 min declared, about 45 min estimated."
+      },
+      {
+        "check": "Concept/example sections cite sources",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Includes supplementary YouTube videos",
+        "passed": true,
+        "detail": ""
+      },
+      {
+        "check": "Includes a reference list",
+        "passed": true,
+        "detail": ""
+      }
+    ],
+    "issues": [
+      {
+        "id": "QC2-1",
+        "layer": "QC2",
+        "severity": "minor",
+        "category": "missing explanation",
+        "location": "3. HTTP Response Status Categories: 2xx, 4xx, and 5xx",
+        "quote": "The 5xx (Server Error) status category indicates that the server encountered an internal failure or error condition that prevented it from fulfilling a valid request [S6]. The error lies entirely on the server side [S6].",
+        "problem": "Unlike 2xx (200, 201) and 4xx (401, 410), the 5xx section does not provide specific status code examples (such as 500 Internal Server Error or 503 Service Unavailable), making it harder for learners to concrete memory anchors for 5xx.",
+        "suggestion": "Add brief bullet points under 5xx for '500 Internal Server Error' (generic server failure) and '503 Service Unavailable' (server temporarily overloaded or under maintenance)."
+      },
+      {
+        "id": "QC2-2",
+        "layer": "QC2",
+        "severity": "major",
+        "category": "weak example",
+        "location": "4. Walkthrough: Request and Response Cycles in Action",
+        "quote": "## 4. Walkthrough: Request and Response Cycles in Action (8 min)",
+        "problem": "The walkthrough provides concrete code blocks for 2xx (200 OK, 201 Created) and 4xx (401 Unauthorized, 410 Gone) responses, but completely omits a 5xx response code walkthrough example, leaving the 5xx objective component incompletely illustrated in practice.",
+        "suggestion": "Add a Scenario 5 showing an HTTP exchange for a server failure (e.g., 'Scenario 5: Database Connection Failure (500 Internal Server Error)' with a sample HTTP 500 response block)."
+      },
+      {
+        "id": "QC2-3",
+        "layer": "QC2",
+        "severity": "major",
+        "category": "misaligned assessment item",
+        "location": "6. Test Your Understanding",
+        "quote": "Q4. According to RFC 9110, which rule correctly describes the generation of the Date header field by origin servers with a clock?",
+        "problem": "Question 4 tests niche specification rules about when the Date header MUST vs MAY be generated across status classes, which is outside the main learning objective of explaining GET/POST and distinguishing 2xx, 4xx, and 5xx categories.",
+        "suggestion": "Replace Q4 with a scenario-based question asking learners to distinguish a server error (5xx class, e.g., 500) from a client error (4xx class, e.g., 404 or 401) when an API request fails."
+      }
+    ],
+    "lesson_version": 1,
+    "model": "gemini-3.5-flash",
+    "created_at": "2026-11-06T17:16:45+00:00"
+  },
+  "applied_issue_ids": []
+}

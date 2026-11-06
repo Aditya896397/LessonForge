@@ -1,0 +1,450 @@
+<!DOCTYPE html><html lang='en'><head><meta charset='utf-8'><title>HTTP Requests and Responses</title><meta name='viewport' content='width=device-width,initial-scale=1'><style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:860px;margin:2rem auto;
+padding:0 1rem;line-height:1.6;color:#1f2328}
+h1{border-bottom:2px solid #e5484d;padding-bottom:.3rem}h2{margin-top:2rem;border-bottom:1px solid #ddd}
+code{background:#f3f3f3;padding:.1rem .3rem;border-radius:4px}
+pre{background:#f6f8fa;padding:1rem;overflow:auto;border-radius:6px}pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:1rem 0}td,th{border:1px solid #ccc;padding:.35rem .6rem;text-align:left}
+th{background:#f6f8fa}blockquote{border-left:4px solid #ddd;margin:0;padding-left:1rem;color:#555}
+@media print{body{margin:0}a{color:inherit}}
+</style></head><body><h1>HTTP Requests and Responses</h1>
+<p><strong>Learning objective:</strong> Explain GET and POST methods and distinguish between 2xx, 4xx, and 5xx response status categories.<br />
+<strong>Duration:</strong> 45 minutes (budget 45) · <strong>Format:</strong> self-paced or instructor-led<br />
+<strong>Audience:</strong> Web developers, API designers, and software engineering students learning fundamental web network communication.<br />
+<strong>Prerequisites:</strong> Basic understanding of web browsers and client-server architecture; Familiarity with basic web terminology (URLs, web pages)</p>
+<h2>What you will be able to do</h2>
+<ul>
+<li>You can define the purpose, message structure, safety, idempotency, and cacheability of GET and POST methods.</li>
+<li>You can categorize HTTP status codes into 2xx (Successful), 4xx (Client Error), and 5xx (Server Error) classes.</li>
+<li>You can evaluate HTTP request/response headers and identify mandatory header requirements such as the Date header.</li>
+</ul>
+<h2>Lesson plan</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Section</th>
+<th>Type</th>
+<th>Minutes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>What Happens When You Click a Link?</td>
+<td>Hook</td>
+<td>3</td>
+</tr>
+<tr>
+<td>2</td>
+<td>HTTP Request Methods: GET vs. POST</td>
+<td>Concept</td>
+<td>10</td>
+</tr>
+<tr>
+<td>3</td>
+<td>HTTP Response Status Categories: 2xx, 4xx, and 5xx</td>
+<td>Concept</td>
+<td>10</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Walkthrough: Request and Response Cycles in Action</td>
+<td>Worked example</td>
+<td>8</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Hands-on Decision Matrix &amp; Scenario Analysis</td>
+<td>Activity</td>
+<td>8</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Test Your Understanding</td>
+<td>Knowledge check</td>
+<td>4</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Lesson Wrap-Up and Next Steps</td>
+<td>Summary</td>
+<td>2</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Total</strong></td>
+<td></td>
+<td><strong>45</strong></td>
+</tr>
+</tbody>
+</table>
+<h2>1. What Happens When You Click a Link? (3 min)</h2>
+<!-- kind: hook -->
+
+<p>Imagine visiting your favorite online store. You click on a product page to view a pair of shoes. A moment later, you enter your shipping information and click "Place Order." </p>
+<p>To your web browser, these two clicks feel completely distinct. The first click simply retrieves information without changing anything on the store's servers. The second click sends data that creates a new purchase order and charges your account—an action you certainly wouldn't want duplicated by accident!</p>
+<p>Under the hood, both interactions rely on <strong>HTTP (Hypertext Transfer Protocol)</strong>, an application-layer protocol sent over TCP or TLS-encrypted TCP connections to exchange request and response messages [S5]. Introduced in 1990 and standardized by specifications such as RFC 9110, HTTP provides the foundation for web communication [S6]. In this lesson, we will explore how HTTP request methods like <strong>GET</strong> and <strong>POST</strong> differ, and how servers use status categories (<strong>2xx</strong>, <strong>4xx</strong>, and <strong>5xx</strong>) to report the outcome of every request [S1, S2, S6].</p>
+<p><em>Sources: [S1], [S2], [S5], [S6]</em></p>
+<h2>2. HTTP Request Methods: GET vs. POST (10 min)</h2>
+<!-- kind: concept -->
+
+<p>An <strong>HTTP request method</strong> (sometimes called an HTTP verb) indicates the primary purpose of a request and what outcome is expected if the request succeeds [S2, S5]. The two most foundational methods on the web are <code>GET</code> and <code>POST</code> [S2].</p>
+<h3>The GET Method</h3>
+<p>The <strong>GET</strong> method requests a representation of a specified resource without altering server state [S2, S3]. When communicating with an origin server in HTTP/1.1, GET uses an absolute path (for example, <code>/path/to/file.html</code>), whereas requests routed through proxies use an absolute URL [S3].</p>
+<ul>
+<li><strong>Request Body</strong>: GET requests should only retrieve data and <strong>must not</strong> contain a request body [S2, S3]. Sending a message body in a GET request has undefined semantics; some servers reject GET requests containing a body with a 4xx client error status code [S3].</li>
+<li><strong>Safety</strong>: A method is <strong>safe</strong> if it is used only to retrieve data and does not alter the state of the server [S2]. GET is safe [S2].</li>
+<li><strong>Idempotency</strong>: A method is <strong>idempotent</strong> if executing it once yields the exact same server state as executing it several times successively [S4]. GET is idempotent because repeating identical GET requests produces no side effects on the server [S2].</li>
+<li><strong>Cacheability</strong>: GET requests and responses are cacheable by default [S2].</li>
+</ul>
+<h3>The POST Method</h3>
+<p>The <strong>POST</strong> method submits an entity to a target resource, typically causing state changes or side effects on the server (such as submitting HTML form results or placing orders) [S2, S4, S5].</p>
+<ul>
+<li><strong>Request Body</strong>: POST carries payload data in its request body [S4, S5]. The format of the body is specified by the <code>Content-Type</code> request header [S4]. HTML forms using POST encode content using either <code>application/x-www-form-urlencoded</code> or <code>multipart/form-data</code> (which separates data blocks using a boundary delimiter, such as <code>boundary="delimiter12345"</code>) [S4]. Non-form requests (e.g., sent via <code>fetch()</code>) can carry any body format [S4].</li>
+<li><strong>Safety and Idempotency</strong>: POST is <strong>neither safe nor idempotent</strong> [S2, S4]. Submitting identical POST requests multiple times can cause duplicated side effects (e.g., placing multiple identical orders) [S4].</li>
+<li><strong>Cacheability</strong>: POST responses are not reusable for satisfying subsequent POST requests because POST is potentially unsafe [S6]. However, a POST response can be cached to satisfy subsequent GET or HEAD requests if it includes explicit freshness information and a <code>Content-Location</code> header matching the target URI [S2, S6].</li>
+</ul>
+<h3>Analogy: Reader vs. Mailbox</h3>
+<p>Think of a <strong>GET</strong> request as looking at a notice pinned to a public bulletin board. Reading it multiple times changes nothing on the board (safe, idempotent). A <strong>POST</strong> request is like dropping a completed application form into a drop box. Dropping three copies of the form produces three entries (non-idempotent) and changes the internal state of the organization receiving them.</p>
+<h3>GET vs. POST Summary Table</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">GET</th>
+<th style="text-align: left;">POST</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Primary Purpose</strong></td>
+<td style="text-align: left;">Retrieve resource data [S2, S3]</td>
+<td style="text-align: left;">Submit payload to cause side effects [S2, S4]</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Request Body</strong></td>
+<td style="text-align: left;">Must NOT contain body (undefined semantics) [S2, S3]</td>
+<td style="text-align: left;">Carries payload data in body [S4, S5]</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Safe?</strong></td>
+<td style="text-align: left;">Yes [S2]</td>
+<td style="text-align: left;">No [S2, S4]</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Idempotent?</strong></td>
+<td style="text-align: left;">Yes [S2]</td>
+<td style="text-align: left;">No [S2, S4]</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Default Cacheability</strong></td>
+<td style="text-align: left;">Cacheable by default [S2]</td>
+<td style="text-align: left;">Unsafe for POST reuse; conditional for GET [S2, S6]</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<h3>Common Mistake</h3>
+<p><strong>Including a payload body inside a GET request for complex search queries.</strong> RFC specifications leave the semantics of a GET body undefined [S3]. Some servers or firewalls will reject GET requests carrying bodies with a 4xx client error [S3]. To send safe, complex search requests with content bodies, modern standards introduce specific methods like <code>QUERY</code> [S8].</p>
+</blockquote>
+<p><em>Sources: [S2], [S3], [S4], [S5], [S6], [S8]</em></p>
+<h2>3. HTTP Response Status Categories: 2xx, 4xx, and 5xx (10 min)</h2>
+<!-- kind: concept -->
+
+<p>HTTP status codes are three-digit numbers generated by servers to communicate the outcome of a client's request [S1, S6]. These status codes are divided into five distinct classes based on their first digit [S1]. We focus on the three primary outcome classes: <strong>2xx</strong>, <strong>4xx</strong>, and <strong>5xx</strong> [S1, S6].</p>
+<h3>2xx: Successful Category</h3>
+<p>The <strong>2xx (Successful)</strong> status category indicates that the client's request was successfully received, understood, and accepted by the server [S1, S6].
+- <code>200 OK</code>: Standard response for successful requests [S1, S3]. For GET requests, the requested resource representation is transmitted in the response body [S1, S3]. For HEAD requests, representation headers are returned without a body [S1, S6]. For POST or PUT requests, a description of the result is included in the body [S1].
+- <code>201 Created</code>: Indicates that the request succeeded and a new resource was created as a result, typically sent after POST or PUT operations [S1].</p>
+<h3>4xx: Client Error Category</h3>
+<p>The <strong>4xx (Client Error)</strong> status category indicates that the request contains bad syntax or cannot be fulfilled due to a client-side problem [S1, S6].
+- <code>401 Unauthorized</code>: Semantically means <strong>"unauthenticated"</strong> [S1]. It indicates that the client must authenticate itself to obtain the requested response [S1].
+- <code>410 Gone</code>: Sent when the requested content has been permanently deleted from the server with no forwarding address, instructing clients and caches to remove references [S1].
+- <code>4xx Client Error</code>: Returned by certain servers when a GET request is improperly submitted with a payload body [S3].</p>
+<h3>5xx: Server Error Category</h3>
+<p>The <strong>5xx (Server Error)</strong> status category indicates that the server encountered an internal failure or error condition that prevented it from fulfilling a valid request [S6]. The error lies entirely on the server side [S6].</p>
+<h3>Header Rules: The Date Header</h3>
+<p>HTTP specifications establish strict rules for server header generation:
+- Origin servers with a clock <strong>MUST</strong> generate a <code>Date</code> header field in all <strong>2xx</strong>, <strong>3xx</strong>, and <strong>4xx</strong> responses [S6].
+- Origin servers <strong>MAY</strong> generate a <code>Date</code> header in <strong>1xx</strong> and <strong>5xx</strong> responses [S6].</p>
+<h3>Response Status Category Overview Table</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Class</th>
+<th style="text-align: left;">Category Name</th>
+<th style="text-align: left;">Responsibility</th>
+<th style="text-align: left;">Specific Code Examples</th>
+<th style="text-align: left;">Date Header Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>2xx</strong></td>
+<td style="text-align: left;">Successful</td>
+<td style="text-align: left;">Server accepted &amp; fulfilled request [S1, S6]</td>
+<td style="text-align: left;"><code>200 OK</code>, <code>201 Created</code> [S1]</td>
+<td style="text-align: left;"><strong>MUST</strong> generate [S6]</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>4xx</strong></td>
+<td style="text-align: left;">Client Error</td>
+<td style="text-align: left;">Client sent malformed/invalid request [S1, S6]</td>
+<td style="text-align: left;"><code>401 Unauthorized</code>, <code>410 Gone</code> [S1]</td>
+<td style="text-align: left;"><strong>MUST</strong> generate [S6]</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>5xx</strong></td>
+<td style="text-align: left;">Server Error</td>
+<td style="text-align: left;">Server failed during processing [S6]</td>
+<td style="text-align: left;">Server internal failure codes [S6]</td>
+<td style="text-align: left;"><strong>MAY</strong> generate [S6]</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<h3>Common Mistake</h3>
+<p><strong>Confusing <code>401 Unauthorized</code> with a permission denial.</strong> Despite its name, <code>401 Unauthorized</code> semantically means <strong>"unauthenticated"</strong>—the user has not provided valid authentication credentials [S1].</p>
+</blockquote>
+<p><em>Sources: [S1], [S3], [S6]</em></p>
+<h2>4. Walkthrough: Request and Response Cycles in Action (8 min)</h2>
+<!-- kind: worked_example -->
+
+<p>Let me walk you through four realistic request and response exchanges, highlighting request structure, header requirements, body handling, and status code categories.</p>
+<h3>Scenario 1: Fetching a Web Page (Safe GET Request -&gt; 200 OK)</h3>
+<p>A client issues a GET request to retrieve a contact page from an origin server [S3]:</p>
+<p><strong>Client Request</strong>:</p>
+<pre><code class="language-http">GET /contact HTTP/1.1
+Host: example.com
+User-Agent: curl/8.6.0
+Accept: */*
+</code></pre>
+<p><em>Explanation</em>: The GET method uses an absolute path (<code>/contact</code>) in HTTP/1.1 and contains no request body [S3].</p>
+<p><strong>Server Response</strong>:</p>
+<pre><code class="language-http">HTTP/1.1 200 OK
+Content-Type: text/html; charset=UTF-8
+Date: Fri, 21 Jun 2024 14:18:33 GMT
+Last-Modified: Thu, 17 Oct 2019 07:18:26 GMT
+Content-Length: 1234
+
+&lt;!doctype html&gt;
+&lt;!-- HTML content follows --&gt;
+</code></pre>
+<p><em>Explanation</em>: The server responds with <code>200 OK</code> (2xx Successful category) [S1, S3]. Because this is a 2xx response from an origin server with a clock, the <code>Date</code> header <strong>MUST</strong> be included [S6]. The target content is returned in the response body [S1, S3].</p>
+<hr />
+<h3>Scenario 2: Submitting Form Data (Unsafe POST Request -&gt; 201 Created)</h3>
+<p>A user submits a web form to create a resource [S4]. HTML form POST requests encode content using <code>application/x-www-form-urlencoded</code> or <code>multipart/form-data</code> [S4].</p>
+<p><strong>Client Request (<code>application/x-www-form-urlencoded</code>)</strong>:</p>
+<pre><code class="language-http">POST /test HTTP/1.1
+Host: example.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 27
+
+field1=value1&amp;field2=value2
+</code></pre>
+<p><strong>Alternative Client Request (<code>multipart/form-data</code>)</strong>:</p>
+<pre><code class="language-http">POST /test HTTP/1.1
+Host: example.com
+Content-Type: multipart/form-data; boundary=&quot;delimiter12345&quot;
+
+--delimiter12345
+Content-Disposition: form-data; name=&quot;field1&quot;
+
+value1
+--delimiter12345--
+</code></pre>
+<p><em>Explanation</em>: Unlike GET, POST carries payload data inside the request body and specifies the format with the <code>Content-Type</code> header [S4]. Multipart data separates payload blocks using a boundary delimiter like <code>boundary="delimiter12345"</code> [S4].</p>
+<p><strong>Server Response</strong>:</p>
+<pre><code class="language-http">HTTP/1.1 201 Created
+Content-Type: text/plain
+Date: Fri, 21 Jun 2024 14:19:00 GMT
+
+Resource successfully created.
+</code></pre>
+<p><em>Explanation</em>: The server processes the state change and responds with <code>201 Created</code> (2xx Successful) [S1]. The <code>Date</code> header is mandatory [S6].</p>
+<hr />
+<h3>Scenario 3: Missing Credentials (401 Unauthorized)</h3>
+<p>A client attempts to access a protected account page without including authentication header credentials [S1].</p>
+<p><strong>Server Response</strong>:</p>
+<pre><code class="language-http">HTTP/1.1 401 Unauthorized
+Content-Type: text/plain
+Date: Fri, 21 Jun 2024 14:20:12 GMT
+
+Authentication credentials missing or invalid.
+</code></pre>
+<p><em>Explanation</em>: The status is <code>401 Unauthorized</code> (4xx Client Error category), which semantically means the client is <strong>unauthenticated</strong> [S1]. A <code>Date</code> header MUST be present because it is a 4xx response [S6].</p>
+<hr />
+<h3>Scenario 4: Accessing a Removed Resource (410 Gone)</h3>
+<p>A client requests an old promotional document that was permanently removed [S1].</p>
+<p><strong>Server Response</strong>:</p>
+<pre><code class="language-http">HTTP/1.1 410 Gone
+Content-Type: text/plain
+Date: Fri, 21 Jun 2024 14:21:05 GMT
+
+This resource has been permanently deleted.
+</code></pre>
+<p><em>Explanation</em>: The server responds with <code>410 Gone</code> (4xx Client Error category), notifying the client and caches that the resource has been permanently deleted with no forwarding address [S1].</p>
+<p><em>Sources: [S1], [S3], [S4], [S6]</em></p>
+<h2>5. Hands-on Decision Matrix &amp; Scenario Analysis (8 min)</h2>
+<!-- kind: activity -->
+
+<p>In this activity, you will analyze four real-world scenarios and determine the appropriate HTTP request method, its safety/idempotency properties, and the expected status code category.</p>
+<h3>Task Instructions</h3>
+<p>For each scenario below, record your answers on a piece of paper or in a text editor:
+1. Choose the primary HTTP method (<code>GET</code> or <code>POST</code>) [S2].
+2. State whether the method is <strong>Safe</strong> and <strong>Idempotent</strong> [S2, S4].
+3. Identify whether a request body should be included [S3, S4].
+4. Determine the expected HTTP status category (<strong>2xx</strong>, <strong>4xx</strong>, or <strong>5xx</strong>) and specific code if applicable [S1, S6].</p>
+<hr />
+<h3>Scenarios to Analyze</h3>
+<ol>
+<li><strong>Scenario A</strong>: A user opens their browser and navigates to the homepage (<code>/index.html</code>) to read news articles [S3].</li>
+<li><strong>Scenario B</strong>: A user submits a registration form containing their email and password to set up a new account [S4].</li>
+<li><strong>Scenario C</strong>: An unauthenticated script requests a restricted user settings endpoint without sending valid credentials [S1].</li>
+<li><strong>Scenario D</strong>: An external client sends a GET request that includes a JSON payload body to an origin server that strictly rejects GET request bodies [S3].</li>
+</ol>
+<hr />
+<h3>Expected Results &amp; Solution Key</h3>
+<ul>
+<li><strong>Scenario A</strong>:</li>
+<li>Method: <code>GET</code> [S3]</li>
+<li>Properties: Safe = Yes, Idempotent = Yes [S2]</li>
+<li>Request Body: No body (MUST NOT contain body) [S2, S3]</li>
+<li>
+<p>Status Category: <code>2xx</code> (specifically <code>200 OK</code>) [S1, S3]</p>
+</li>
+<li>
+<p><strong>Scenario B</strong>:</p>
+</li>
+<li>Method: <code>POST</code> [S4]</li>
+<li>Properties: Safe = No, Idempotent = No [S2, S4]</li>
+<li>Request Body: Yes (encoded via <code>application/x-www-form-urlencoded</code> or <code>multipart/form-data</code>) [S4]</li>
+<li>
+<p>Status Category: <code>2xx</code> (specifically <code>201 Created</code> or <code>200 OK</code>) [S1]</p>
+</li>
+<li>
+<p><strong>Scenario C</strong>:</p>
+</li>
+<li>Method: <code>GET</code> (or POST depending on operation)</li>
+<li>
+<p>Status Category: <code>4xx</code> Client Error (specifically <code>401 Unauthorized</code>, meaning unauthenticated) [S1, S6]</p>
+</li>
+<li>
+<p><strong>Scenario D</strong>:</p>
+</li>
+<li>Result: The request violates GET semantics (undefined body semantics) [S3].</li>
+<li>Status Category: <code>4xx</code> Client Error (server rejects the GET body) [S3].</li>
+</ul>
+<h3>Self-Check</h3>
+<p>Did you correctly identify that GET requests must not carry request bodies and are safe/idempotent, while POST requests carry payloads and are neither safe nor idempotent [S2, S3, S4]?</p>
+<p><em>Sources: [S1], [S2], [S3], [S4], [S6]</em></p>
+<h2>6. Test Your Understanding (4 min)</h2>
+<!-- kind: knowledge_check -->
+
+<p>Answer the following multiple-choice questions to evaluate your understanding of HTTP request methods and status code categories.</p>
+<p><strong>Q1.</strong> A web user double-clicks the 'Submit Payment' button on an order checkout page. The browser issues two identical HTTP POST requests to <code>/checkout</code>. What is the expected behavior regarding idempotency?</p>
+<ul>
+<li>A) POST is idempotent, so executing it twice yields the exact same server state as executing it once.</li>
+<li>B) POST is safe and idempotent, so duplicate requests are automatically ignored by origin servers.</li>
+<li>C) POST is neither safe nor idempotent, so executing it twice may cause side effects like creating duplicate orders.</li>
+<li>D) POST is safe but not idempotent, so it retrieves data while modifying response headers.</li>
+</ul>
+<p><strong>Q2.</strong> A client application constructs an HTTP GET request to search a database and includes a JSON payload in the request body. What is the standard HTTP semantics rule for this request?</p>
+<ul>
+<li>A) Sending a body in a GET request is safe and explicitly mandated by RFC 9110.</li>
+<li>B) Sending a body in a GET request has undefined semantics, and some servers reject it with a 4xx client error.</li>
+<li>C) GET request bodies are automatically converted to POST requests by intermediate proxies.</li>
+<li>D) GET request bodies are cacheable by default if a Content-Type header is provided.</li>
+</ul>
+<p><strong>Q3.</strong> An API client sends a request to fetch protected account information without presenting valid authentication credentials. The server responds with status code 401. What does 401 semantically mean?</p>
+<ul>
+<li>A) The server encountered an internal failure processing the request.</li>
+<li>B) The client is authenticated but lacks permission to view the resource.</li>
+<li>C) The client is unauthenticated and must provide valid credentials.</li>
+<li>D) The requested content has been permanently deleted with no forwarding address.</li>
+</ul>
+<p><strong>Q4.</strong> According to RFC 9110, which rule correctly describes the generation of the Date header field by origin servers with a clock?</p>
+<ul>
+<li>A) Origin servers MUST generate a Date header in 2xx, 3xx, and 4xx responses, and MAY generate one in 1xx and 5xx responses.</li>
+<li>B) Origin servers MUST generate a Date header in 5xx responses, but MAY omit it in 2xx and 4xx responses.</li>
+<li>C) Origin servers MUST generate a Date header in all 5xx and 1xx responses, but MAY omit it in 2xx responses.</li>
+<li>D) Origin servers MAY generate a Date header in 2xx responses, but MUST NOT generate one in 4xx responses.</li>
+</ul>
+<p><strong>Q5.</strong> A client submits an HTML form using the POST method with file upload capabilities. How is the payload body formatted?</p>
+<ul>
+<li>A) It must use absolute URLs with path markers.</li>
+<li>B) It is formatted using multipart/form-data with a boundary delimiter or application/x-www-form-urlencoded.</li>
+<li>C) It is appended directly to the URL query string with undefined body semantics.</li>
+<li>D) It uses HEAD representation headers without a body payload.</li>
+</ul>
+<p><strong>Q6.</strong> A client requests a URL for a promotional campaign that was permanently deleted from the web server with no forwarding address. What response status code should the server return?</p>
+<ul>
+<li>A) 201 Created</li>
+<li>B) 401 Unauthorized</li>
+<li>C) 410 Gone</li>
+<li>D) 500 Server Error</li>
+</ul>
+<p><em>Sources: [S1], [S2], [S3], [S4], [S6]</em></p>
+<h2>7. Lesson Wrap-Up and Next Steps (2 min)</h2>
+<!-- kind: summary -->
+
+<h3>Summary of Core Concepts</h3>
+<ul>
+<li><strong>GET</strong>: Used to retrieve target resource representations [S2, S3]. It is safe, idempotent, cacheable by default, and must not carry a request body [S2, S3].</li>
+<li><strong>POST</strong>: Used to submit payloads that alter server state or create resources [S2, S4]. It is neither safe nor idempotent, carries payload data in its request body (e.g., <code>application/x-www-form-urlencoded</code> or <code>multipart/form-data</code>), and its responses cannot satisfy subsequent POST requests [S2, S4, S6].</li>
+<li><strong>Status Categories</strong>: Status codes communicate outcome states [S1, S6]:</li>
+<li><strong>2xx (Successful)</strong>: Request accepted and fulfilled (e.g., <code>200 OK</code>, <code>201 Created</code>) [S1, S6].</li>
+<li><strong>4xx (Client Error)</strong>: Client-side syntax or auth issue (e.g., <code>401 Unauthorized</code> [unauthenticated], <code>410 Gone</code> [permanently deleted]) [S1, S6].</li>
+<li><strong>5xx (Server Error)</strong>: Server encountered an internal failure while processing [S6].</li>
+<li><strong>Header Requirements</strong>: Origin servers with a clock <strong>MUST</strong> include a <code>Date</code> header in 2xx, 3xx, and 4xx responses, and <strong>MAY</strong> include one in 5xx responses [S6].</li>
+</ul>
+<h3>Next Step</h3>
+<p>Next, explore HTTP headers in depth (such as cache-control and custom headers) or learn how modern APIs utilize HTTP methods for RESTful system design!</p>
+<p><em>Sources: [S1], [S2], [S3], [S4], [S6]</em></p>
+<h2>Key takeaways</h2>
+<ul>
+<li>GET requests retrieve resource representations without modifying server state, making GET both safe and idempotent [S2, S3].</li>
+<li>GET requests must not contain a request body; sending a body in a GET request has undefined semantics and may cause 4xx server rejections [S2, S3].</li>
+<li>POST requests submit payload data in the message body to cause side effects, making POST neither safe nor idempotent [S2, S4].</li>
+<li>HTTP status categories categorize server outcome states: 2xx means Successful, 4xx means Client Error, and 5xx means Server Error [S1, S6].</li>
+<li>Status code 401 Unauthorized semantically means 'unauthenticated', requiring the client to present valid credentials [S1].</li>
+<li>Origin servers with a clock MUST generate a Date header in all 2xx, 3xx, and 4xx responses, and MAY generate one in 5xx responses [S6].</li>
+</ul>
+<h2>Answer key</h2>
+<ol>
+<li><strong>C</strong>: POST is neither safe nor idempotent [S2, S4]. Submitting duplicate POST requests can result in duplicate side effects on the server, such as creating two distinct purchase orders [S4].</li>
+<li><strong>B</strong>: GET requests should only retrieve data and must not contain a body [S2, S3]. Standard HTTP leaves body semantics in GET requests undefined, and some servers reject GET requests carrying bodies with a 4xx client error status code [S3].</li>
+<li><strong>C</strong>: Although status code 401 is named 'Unauthorized', HTTP specifications clarify that it semantically means 'unauthenticated'—the client must authenticate itself to receive the requested response [S1].</li>
+<li><strong>A</strong>: RFC 9110 specifies that origin servers with a clock MUST generate a Date header in all 2xx, 3xx, and 4xx responses, and MAY generate one in 1xx and 5xx responses [S6].</li>
+<li><strong>B</strong>: HTML forms using POST encode body content using either application/x-www-form-urlencoded or multipart/form-data (which separates data blocks using a boundary delimiter, such as boundary="delimiter12345") [S4].</li>
+<li><strong>C</strong>: Status code 410 Gone (in the 4xx Client Error category) is sent when requested content has been permanently deleted from the server with no forwarding address [S1].</li>
+</ol>
+<h2>Supplementary videos (optional, outside the 45 minutes)</h2>
+<ul>
+<li><strong><a href="https://www.youtube.com/watch?v=tkfVQK6UxDI">HTTP Request Methods | GET, POST, PUT, DELETE</a></strong> (Curious Code, 3:01). <em>When:</em> before. <em>Why:</em> Provides a quick, visual 3-minute explanation of core HTTP request methods (GET, POST, PUT, DELETE) and their basic purposes. [V1]</li>
+<li><strong><a href="https://www.youtube.com/watch?v=qmpUfWN7hh4">HTTP Status Codes Explained In 5 Minutes</a></strong> (ByteByteGo, 5:07). <em>When:</em> during. <em>Why:</em> Offers a concise 5-minute visual overview explaining status code categories (2xx, 4xx, 5xx) and common HTTP response states. [V2]</li>
+</ul>
+<h2>References</h2>
+<h3>Websites</h3>
+<ul>
+<li>[S1] HTTP response status codes - HTTP | MDN. developer.mozilla.org. <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status">https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status</a></li>
+<li>[S2] HTTP request methods - HTTP | MDN. developer.mozilla.org. <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods">https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods</a></li>
+<li>[S3] GET request method - HTTP | MDN. developer.mozilla.org. <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/GET">https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/GET</a></li>
+<li>[S4] POST request method - HTTP | MDN. developer.mozilla.org. <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST">https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/POST</a></li>
+<li>[S5] Overview of HTTP - HTTP | MDN. developer.mozilla.org. <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview">https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview</a></li>
+<li>[S6] RFC 9110: HTTP Semantics. rfc-editor.org. <a href="https://www.rfc-editor.org/rfc/rfc9110.html#name-status-codes">https://www.rfc-editor.org/rfc/rfc9110.html#name-status-codes</a></li>
+<li>[S7] HTTP headers - HTTP | MDN. developer.mozilla.org. <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers">https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers</a></li>
+<li>[S8] QUERY request method - HTTP | MDN. developer.mozilla.org. <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/QUERY">https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/QUERY</a></li>
+</ul>
+<h3>Books</h3>
+<ul>
+<li>[B1] <em>HTTP: The Definitive Guide</em>. David Gourley, Brian Totty, Linda Mui · O'Reilly Media, Incorporated · 1997. <a href="https://openlibrary.org/works/OL16026044W">https://openlibrary.org/works/OL16026044W</a></li>
+<li>[B2] <em>RESTful Web APIs: Services for a Changing World</em>. Leonard Richardson, Michael Amundsen, Sam Ruby · O'Reilly Media · 2013. <a href="https://openlibrary.org/works/OL19548004W">https://openlibrary.org/works/OL19548004W</a></li>
+<li>[B3] <em>Learning HTTP/2</em>. Stephen Ludin · CreateSpace Independent Publishing Platform · 2017. <a href="https://openlibrary.org/works/OL20055086W">https://openlibrary.org/works/OL20055086W</a></li>
+</ul>
+<h3>Videos</h3>
+<ul>
+<li>[V1] HTTP Request Methods | GET, POST, PUT, DELETE. Curious Code, YouTube. <a href="https://www.youtube.com/watch?v=tkfVQK6UxDI">https://www.youtube.com/watch?v=tkfVQK6UxDI</a></li>
+<li>[V2] HTTP Status Codes Explained In 5 Minutes. ByteByteGo, YouTube. <a href="https://www.youtube.com/watch?v=qmpUfWN7hh4">https://www.youtube.com/watch?v=qmpUfWN7hh4</a></li>
+</ul></body></html>
